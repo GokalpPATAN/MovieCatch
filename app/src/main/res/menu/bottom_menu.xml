@@ -1,24 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/homeFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_camera_roll_24"
         android:title="@string/now_playing" />
     <item
         android:id="@+id/popularFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_local_movies_24"
         android:title="@string/popular" />
     <item
         android:id="@+id/ratedFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_stars_24"
         android:title="@string/top_rated" />
+
     <item
         android:id="@+id/upcomingFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:icon="@drawable/baseline_upcoming_24"
         android:title="@string/upcoming" />
+
 
 </menu>

@@ -28,22 +28,7 @@ class HomeFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.button1.setOnClickListener {
-            val action =HomeFragmentDirections.actionHomeFragmentSelf()
-            Navigation.findNavController(it).navigate(action)
-        }
-        binding.button2.setOnClickListener {
-            val action =HomeFragmentDirections.actionHomeFragmentToPopularFragment()
-            Navigation.findNavController(it).navigate(action)
-        }
-        binding.button3.setOnClickListener {
-            val action =HomeFragmentDirections.actionHomeFragmentToRatedFragment()
-            Navigation.findNavController(it).navigate(action)
-        }
-        binding.button4.setOnClickListener {
-            val action =HomeFragmentDirections.actionHomeFragmentToUpcomingFragment()
-            Navigation.findNavController(it).navigate(action)
-        }
+
     }
 
     override fun onDestroyView() {

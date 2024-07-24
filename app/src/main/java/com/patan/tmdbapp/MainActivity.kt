@@ -8,6 +8,7 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.setupActionBarWithNavController
 import com.patan.tmdbapp.databinding.ActivityMainBinding
 
@@ -21,12 +22,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        createBottomNavigation()
 
-        navHostFragment = supportFragmentManager.findFragmentById(binding.fragmentContainerView.id) as NavHostFragment
-        navController = navHostFragment.findNavController()
+    }
 
-        setupActionBarWithNavController(navController)
-
+    private fun createBottomNavigation() {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment
+        NavigationUI.setupWithNavController(binding.bottomnav,navHostFragment.navController)
     }
 
     override fun onSupportNavigateUp(): Boolean {
