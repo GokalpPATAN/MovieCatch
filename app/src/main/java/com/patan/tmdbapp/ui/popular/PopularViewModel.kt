@@ -1,39 +1,37 @@
-package com.patan.tmdbapp.ui.home
+package com.patan.tmdbapp.ui.popular
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.patan.tmdbapp.model.NowPlayingItem
+import com.patan.tmdbapp.model.PopularItem
 import com.patan.tmdbapp.network.RetrofitClient
 import com.patan.tmdbapp.util.Constants
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
-    val nowList : MutableLiveData<List<NowPlayingItem?>?> = MutableLiveData()
-    val errorMesage: MutableLiveData<String?> = MutableLiveData()
+class PopularViewModel: ViewModel() {
+    val popularList:MutableLiveData<List<PopularItem?>?> = MutableLiveData()
+    val errorMesage:MutableLiveData<String?> = MutableLiveData()
 
     init {
-        getNow()
+        getPopular()
     }
-
-    fun getNow(){
+    fun getPopular(){
         viewModelScope.launch {
+            val response=RetrofitClient.getClient().getPopular(token = Constants.BEARER_POPULAR)
             try {
-                val response = RetrofitClient.getClient().getNow(token = Constants.BEARER_NOW)
-
-                if(response.isSuccessful) {
-                    nowList.postValue(response.body()?.nowPlayingItems)
-                }else{
+                if(response.isSuccessful){
+                    popularList.postValue(response.body()?.popularItems)
+                }
+                else{
                     if (response.message().isNullOrEmpty()){
                         errorMesage.value="An unknown error occured"
-                    } else{
+                    }else{
                         errorMesage.value=response.message()
                     }
                 }
             }
             catch (e:Exception){
                 errorMesage.value=e.message
-
             }
         }
     }
