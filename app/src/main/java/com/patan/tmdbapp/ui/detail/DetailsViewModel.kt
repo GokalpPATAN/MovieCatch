@@ -1,28 +1,27 @@
-package com.patan.tmdbapp.ui.home
+package com.patan.tmdbapp.ui.detail
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.patan.tmdbapp.model.NowPlayingItem
+import com.patan.tmdbapp.model.DetailsResponse
+import com.patan.tmdbapp.model.Genre
 import com.patan.tmdbapp.network.RetrofitClient
 import com.patan.tmdbapp.util.Constants
 import kotlinx.coroutines.launch
 
-class HomeViewModel : ViewModel() {
-    val nowList: MutableLiveData<List<NowPlayingItem?>?> = MutableLiveData()
+class DetailsViewModel : ViewModel() {
+    val detailList: MutableLiveData<DetailsResponse> = MutableLiveData()
     val errorMesage: MutableLiveData<String?> = MutableLiveData()
+    val genreList: MutableLiveData<List<Genre?>?> = MutableLiveData()
 
-    init {
-        getNow()
-    }
-
-    fun getNow() {
+    fun getDetails(movieId: Int) {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.getClient().getNow(token = Constants.BEARER_NOW)
-
+                val response = RetrofitClient.getClient()
+                    .getDetails(movieId = movieId.toString(), token = Constants.BEARER_DETAILS)
                 if (response.isSuccessful) {
-                    nowList.postValue(response.body()?.nowPlayingItems)
+                    detailList.postValue(response.body())
+                    genreList.postValue(response.body()?.genres)
                 } else {
                     if (response.message().isNullOrEmpty()) {
                         errorMesage.value = "An unknown error occured"
@@ -36,4 +35,5 @@ class HomeViewModel : ViewModel() {
             }
         }
     }
+
 }

@@ -1,11 +1,12 @@
 package com.patan.tmdbapp.ui.home
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentHomeBinding
 
 
@@ -36,7 +37,14 @@ class HomeFragment : Fragment() {
         viewModel.nowList.observe(viewLifecycleOwner) { list ->
             if(list.isNullOrEmpty()){
             }else{
-            nowListAdapter = HomeAdapter(list)
+            nowListAdapter = HomeAdapter(list, object : MovieClickListener{
+                override fun onMovieClicked(movieId: Int?) {
+                    movieId?.let {
+                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it)
+                        findNavController().navigate(action)
+                    }
+                }
+            })
             binding.recyclerView2.adapter = nowListAdapter
             }
         }
