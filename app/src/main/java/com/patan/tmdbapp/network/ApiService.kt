@@ -1,7 +1,7 @@
 package com.patan.tmdbapp.network
 
 import com.patan.tmdbapp.model.DetailsResponse
-import com.patan.tmdbapp.model.Genre
+import com.patan.tmdbapp.model.GenreItems
 import com.patan.tmdbapp.model.NowPlayingResponse
 import com.patan.tmdbapp.model.PopularResponse
 import com.patan.tmdbapp.model.RatedResponse
@@ -27,7 +27,7 @@ interface ApiService {
     suspend fun getDetails(@Path("movieId") movieId: String, @Header("Authorization")token: String):Response<DetailsResponse>
 
     @GET("{movieId}")
-    suspend fun getGenre(@Path("movieId") movieId: String, @Header("Authorization")token: String):Response<Genre>
+    suspend fun getGenre(@Path("movieId") movieId: String, @Header("Authorization")token: String):Response<GenreItems>
 
 
 

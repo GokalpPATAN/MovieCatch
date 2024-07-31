@@ -35,17 +35,18 @@ class HomeFragment : Fragment() {
 
     private fun observeEvents() {
         viewModel.nowList.observe(viewLifecycleOwner) { list ->
-            if(list.isNullOrEmpty()){
-            }else{
-            nowListAdapter = HomeAdapter(list, object : MovieClickListener{
-                override fun onMovieClicked(movieId: Int?) {
-                    movieId?.let {
-                        val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it)
-                        findNavController().navigate(action)
+            if (list.isNullOrEmpty()) {
+            } else {
+                nowListAdapter = HomeAdapter(list, object : MovieClickListener {
+                    override fun onMovieClicked(movieId: Int?) {
+                        movieId?.let {
+                            val action =
+                                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it)
+                            findNavController().navigate(action)
+                        }
                     }
-                }
-            })
-            binding.recyclerView2.adapter = nowListAdapter
+                })
+                binding.recyclerView2.adapter = nowListAdapter
             }
         }
     }

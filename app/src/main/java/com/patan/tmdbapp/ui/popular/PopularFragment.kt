@@ -25,7 +25,7 @@ class PopularFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding=FragmentPopularBinding.inflate(inflater,container,false)
+        _binding = FragmentPopularBinding.inflate(inflater, container, false)
 
         viewModel.getPopular()
         observeEvents()
@@ -33,12 +33,11 @@ class PopularFragment : Fragment() {
     }
 
     private fun observeEvents() {
-        viewModel.popularList.observe(viewLifecycleOwner){list ->
-            if (list.isNullOrEmpty()){
-            }
-            else{
-                popularListAdapter=PopularAdapter(list)
-                binding.recyclerView3.adapter=popularListAdapter
+        viewModel.popularList.observe(viewLifecycleOwner) { list ->
+            if (list.isNullOrEmpty()) {
+            } else {
+                popularListAdapter = PopularAdapter(list)
+                binding.recyclerView3.adapter = popularListAdapter
             }
         }
     }

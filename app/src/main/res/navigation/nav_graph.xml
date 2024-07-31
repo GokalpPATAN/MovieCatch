@@ -18,17 +18,29 @@
         android:id="@+id/popularFragment"
         android:name="com.patan.tmdbapp.ui.popular.PopularFragment"
         android:label="Popular"
-        tools:layout="@layout/fragment_popular"/>
+        tools:layout="@layout/fragment_popular">
+        <action
+            android:id="@+id/action_popularFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/ratedFragment"
         android:name="com.patan.tmdbapp.ui.top_rated.RatedFragment"
         android:label="Top Rated"
-        tools:layout="@layout/fragment_rated"/>
+        tools:layout="@layout/fragment_rated">
+        <action
+            android:id="@+id/action_ratedFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/upcomingFragment"
         android:name="com.patan.tmdbapp.ui.upcoming.UpcomingFragment"
         android:label="Upcoming"
-        tools:layout="@layout/fragment_upcoming"/>
+        tools:layout="@layout/fragment_upcoming">
+        <action
+            android:id="@+id/action_upcomingFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
     <fragment
         android:id="@+id/detailsFragment"
         android:name="com.patan.tmdbapp.ui.detail.DetailsFragment"
@@ -40,5 +52,14 @@
         <action
             android:id="@+id/action_detailsFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_ratedFragment"
+            app:destination="@id/ratedFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_upcomingFragment"
+            app:destination="@id/upcomingFragment" />
+        <action
+            android:id="@+id/action_detailsFragment_to_popularFragment"
+            app:destination="@id/popularFragment" />
     </fragment>
 </navigation>

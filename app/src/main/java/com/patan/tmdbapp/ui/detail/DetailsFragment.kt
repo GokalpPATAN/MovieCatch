@@ -31,25 +31,19 @@ class DetailsFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
+        viewModel.getDetails(movieId = args.movieId)
+        observeGenre()
+        observeEvents()
         binding.button.setOnClickListener {
             val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
             findNavController().navigate(action)
         }
-        viewModel.getDetails(movieId = args.movieId)
-        // observeGenre()
-        observeEvents()
         return binding.root
+
     }
 
     private fun observeEvents() {
-        viewModel.genreList.observe(viewLifecycleOwner) { list ->
-            if (list.isNullOrEmpty()) {
-            } else {
-                genreListAdapter = DetailsAdapter(list)
-                binding.recyclerView3.adapter = genreListAdapter
-            }
 
-        }
         viewModel.detailList.observe(viewLifecycleOwner) { movie ->
             binding.textView.text = movie.title
             binding.textView2.text = movie.overview
@@ -62,16 +56,15 @@ class DetailsFragment : Fragment() {
 
     }
 
-    /* private fun observeGenre() {
-         viewModel.genreList.observe(viewLifecycleOwner) { list ->
-             if (list.isNullOrEmpty()) {
-             } else {
-                 genreListAdapter = DetailsAdapter(list)
-                 binding.recyclerView3.adapter = genreListAdapter
-             }
-
-         }
-     } */
+    private fun observeGenre() {
+        viewModel.genreList.observe(viewLifecycleOwner) { list ->
+            if (list.isNullOrEmpty()) {
+            } else {
+                genreListAdapter = DetailsAdapter(list)
+                binding.recyclerView3.adapter = genreListAdapter
+            }
+        }
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

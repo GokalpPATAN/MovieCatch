@@ -21,7 +21,24 @@ class DetailsViewModel : ViewModel() {
                     .getDetails(movieId = movieId.toString(), token = Constants.BEARER_DETAILS)
                 if (response.isSuccessful) {
                     detailList.postValue(response.body())
-                    genreList.postValue(response.body()?.genres)
+                } else {
+                    if (response.message().isNullOrEmpty()) {
+                        errorMesage.value = "An unknown error occured"
+                    } else {
+                        errorMesage.value = response.message()
+                    }
+                }
+            } catch (e: Exception) {
+                errorMesage.value = e.message
+
+            }
+        }
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.getClient()
+                    .getGenre(movieId = movieId.toString(), token = Constants.BEARER_DETAILS)
+                if (response.isSuccessful) {
+                    genreList.postValue(response.body()?.genreItems)
                 } else {
                     if (response.message().isNullOrEmpty()) {
                         errorMesage.value = "An unknown error occured"
