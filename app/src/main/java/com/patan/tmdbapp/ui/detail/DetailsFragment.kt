@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -51,9 +52,12 @@ class DetailsFragment : Fragment() {
             binding.textView3.text = movie.releaseDate
             binding.textView5.text = movie.status
             binding.textView6.text = movie.voteAverage.toString()
+            binding.textView4.isVisible = true
+            binding.textView7.isVisible = true
+            binding.imageView.isVisible = true
+            binding.progressBar.isVisible = false
 
         }
-
     }
 
     private fun observeGenre() {
@@ -62,6 +66,7 @@ class DetailsFragment : Fragment() {
             } else {
                 genreListAdapter = DetailsAdapter(list)
                 binding.recyclerView3.adapter = genreListAdapter
+                binding.textView8.isVisible = true
             }
         }
     }

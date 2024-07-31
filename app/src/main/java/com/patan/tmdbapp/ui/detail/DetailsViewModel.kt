@@ -14,8 +14,10 @@ class DetailsViewModel : ViewModel() {
     val detailList: MutableLiveData<DetailsResponse> = MutableLiveData()
     val errorMesage: MutableLiveData<String?> = MutableLiveData()
     val genreList: MutableLiveData<List<Genre?>?> = MutableLiveData()
+    val loading = MutableLiveData(false)
 
     fun getDetails(movieId: Int) {
+        loading.value = true
         viewModelScope.launch {
             try {
                 val response = RetrofitClient.getClient()
@@ -32,6 +34,7 @@ class DetailsViewModel : ViewModel() {
             } catch (e: Exception) {
                 errorMesage.value = e.message
             }
+            loading.value = false
         }
         viewModelScope.launch {
             try {
