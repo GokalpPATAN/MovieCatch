@@ -30,7 +30,6 @@ class DetailsViewModel : ViewModel() {
                 }
             } catch (e: Exception) {
                 errorMesage.value = e.message
-
             }
         }
         viewModelScope.launch {

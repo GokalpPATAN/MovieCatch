@@ -8,8 +8,8 @@ import com.patan.tmdbapp.network.RetrofitClient
 import com.patan.tmdbapp.util.Constants
 import kotlinx.coroutines.launch
 
-class RatedViewModel:ViewModel() {
-    val ratedList : MutableLiveData<List<RatedItem?>?> = MutableLiveData()
+class RatedViewModel : ViewModel() {
+    val ratedList: MutableLiveData<List<RatedItem?>?> = MutableLiveData()
     val errorMesage: MutableLiveData<String?> = MutableLiveData()
 
     init {
@@ -19,24 +19,22 @@ class RatedViewModel:ViewModel() {
     fun getTop() {
         viewModelScope.launch {
             try {
-                val response=RetrofitClient.getClient().getTop(token = Constants.BEARER_TOP)
-                if(response.isSuccessful){
+                val response = RetrofitClient.getClient().getTop(token = Constants.BEARER_TOP)
+                if (response.isSuccessful) {
                     ratedList.postValue(response.body()?.ratedItems)
-                }else{
-                if (response.message().isNullOrEmpty()){
-                    errorMesage.value="An unknown error occured"
-                }else{
-                    errorMesage.value=response.message()
-                }
+                } else {
+                    if (response.message().isNullOrEmpty()) {
+                        errorMesage.value = "An unknown error occured"
+                    } else {
+                        errorMesage.value = response.message()
+                    }
 
                 }
 
-            }catch (e:Exception){
-                errorMesage.value=e.message
+            } catch (e: Exception) {
+                errorMesage.value = e.message
 
             }
         }
     }
-
-
 }
