@@ -7,13 +7,27 @@ import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
 import com.patan.tmdbapp.model.UpcomingItem
 import com.patan.tmdbapp.util.loadCircleImage
 
-class UpcomingAdapter(private val upList: List<UpcomingItem?>):RecyclerView.Adapter<UpcomingAdapter.ViewHolder>() {
-    class ViewHolder( val binding: ItemHomeRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
+interface MovieClickListener {
+    fun onMovieClicked(movieId: Int?)
+}
+
+class UpcomingAdapter(
+    private val upList: List<UpcomingItem?>,
+    private val movieClickListener: MovieClickListener
+) : RecyclerView.Adapter<UpcomingAdapter.ViewHolder>() {
+    class ViewHolder(val binding: ItemHomeRecyclerViewBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemHomeRecyclerViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(
+            ItemHomeRecyclerViewBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int {
@@ -21,11 +35,15 @@ class UpcomingAdapter(private val upList: List<UpcomingItem?>):RecyclerView.Adap
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val up=upList[position]
+        val up = upList[position]
 
-        holder.binding.MovieTitle.text=up?.title
-        holder.binding.MovieDesc.text=up?.overview
-        holder.binding.Rate.text=up?.voteAverage.toString()
+        holder.binding.MovieTitle.text = up?.title
+        holder.binding.MovieDesc.text = up?.overview
+        holder.binding.Rate.text = up?.voteAverage.toString()
         holder.binding.MovieImage.loadCircleImage(up?.posterPath)
+
+        holder.binding.root.setOnClickListener {
+            movieClickListener.onMovieClicked(movieId = up?.id)
+        }
     }
 }

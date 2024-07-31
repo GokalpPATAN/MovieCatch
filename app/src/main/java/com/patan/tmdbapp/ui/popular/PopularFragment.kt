@@ -1,11 +1,12 @@
 package com.patan.tmdbapp.ui.popular
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentPopularBinding
 
 
@@ -36,7 +37,15 @@ class PopularFragment : Fragment() {
         viewModel.popularList.observe(viewLifecycleOwner) { list ->
             if (list.isNullOrEmpty()) {
             } else {
-                popularListAdapter = PopularAdapter(list)
+                popularListAdapter = PopularAdapter(list, object : MovieClickListener {
+                    override fun onMovieClicked(movieId: Int?) {
+                        if(movieId !=null) {
+                            val action =
+                                PopularFragmentDirections.actionPopularFragmentToDetailsFragment(movieId)
+                            findNavController().navigate(action)
+                        }
+                    }
+                })
                 binding.recyclerView3.adapter = popularListAdapter
             }
         }

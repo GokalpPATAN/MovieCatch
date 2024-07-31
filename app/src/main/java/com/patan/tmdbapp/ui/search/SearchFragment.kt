@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentSearchBinding
 
 class SearchFragment : Fragment() {
@@ -51,7 +52,16 @@ class SearchFragment : Fragment() {
             if (list.isNullOrEmpty()) {
 
             } else {
-                searchAdapter = SearchAdapter(list)
+                searchAdapter = SearchAdapter(list, object : MovieClickListener {
+                    override fun onMovieClicked(movieId: Int?) {
+                        if(movieId !=null) {
+                            val action =
+                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(movieId)
+                            findNavController().navigate(action)
+                        }
+                    }
+
+                })
                 binding.RecyclerView5.adapter = searchAdapter
             }
         }

@@ -39,9 +39,9 @@ class HomeFragment : Fragment() {
             } else {
                 nowListAdapter = HomeAdapter(list, object : MovieClickListener {
                     override fun onMovieClicked(movieId: Int?) {
-                        movieId?.let {
+                        if(movieId !=null) {
                             val action =
-                                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(it)
+                                HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId)
                             findNavController().navigate(action)
                         }
                     }

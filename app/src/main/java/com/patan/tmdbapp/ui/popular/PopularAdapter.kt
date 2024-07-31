@@ -7,11 +7,25 @@ import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
 import com.patan.tmdbapp.model.PopularItem
 import com.patan.tmdbapp.util.loadCircleImage
 
-class PopularAdapter(private val popularList: List<PopularItem?>): RecyclerView.Adapter<PopularAdapter.ViewHolder>() {
-    class ViewHolder(val binding: ItemHomeRecyclerViewBinding):RecyclerView.ViewHolder(binding.root)
+interface MovieClickListener {
+    fun onMovieClicked(movieId: Int?)
+}
+
+class PopularAdapter(
+    private val popularList: List<PopularItem?>,
+    private val movieClickListener: MovieClickListener
+) : RecyclerView.Adapter<PopularAdapter.ViewHolder>() {
+    class ViewHolder(val binding: ItemHomeRecyclerViewBinding) :
+        RecyclerView.ViewHolder(binding.root)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder(ItemHomeRecyclerViewBinding.inflate(LayoutInflater.from(parent.context),parent,false))
+        return ViewHolder(
+            ItemHomeRecyclerViewBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
     override fun getItemCount(): Int {
@@ -26,6 +40,10 @@ class PopularAdapter(private val popularList: List<PopularItem?>): RecyclerView.
         holder.binding.Rate.text = popular?.voteAverage.toString()
 
         holder.binding.MovieImage.loadCircleImage(popular?.posterPath)
+
+        holder.binding.root.setOnClickListener {
+            movieClickListener.onMovieClicked(movieId = popular?.id)
+        }
     }
 
 }

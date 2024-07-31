@@ -5,9 +5,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
 import com.patan.tmdbapp.model.RatedItem
+import com.patan.tmdbapp.ui.popular.MovieClickListener
 import com.patan.tmdbapp.util.loadCircleImage
 
-class RatedAdapter(private val ratedList: List<RatedItem?>): RecyclerView.Adapter<RatedAdapter.ViewHolder>(){
+interface MovieClickListener {
+    fun onMovieClicked(movieId: Int?)
+}
+
+class RatedAdapter(private val ratedList: List<RatedItem?>,private val movieClickListener: MovieClickListener): RecyclerView.Adapter<RatedAdapter.ViewHolder>(){
     class ViewHolder(val binding: ItemHomeRecyclerViewBinding):RecyclerView.ViewHolder(binding.root) {
 
     }
@@ -27,6 +32,10 @@ class RatedAdapter(private val ratedList: List<RatedItem?>): RecyclerView.Adapte
         holder.binding.MovieDesc.text=rated?.overview
         holder.binding.Rate.text=rated?.voteAverage.toString()
         holder.binding.MovieImage.loadCircleImage(rated?.posterPath)
+
+        holder.binding.root.setOnClickListener {
+            movieClickListener.onMovieClicked(movieId = rated?.id)
+        }
     }
 
 }

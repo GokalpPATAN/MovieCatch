@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.patan.tmdbapp.databinding.ItemDetailsRecyclerViewBinding
 import com.patan.tmdbapp.model.Genre
 
+
+
 class DetailsAdapter(private val genreList: List<Genre?>) :
     RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemDetailsRecyclerViewBinding) :

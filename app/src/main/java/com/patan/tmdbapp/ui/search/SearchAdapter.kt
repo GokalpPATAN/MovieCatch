@@ -5,9 +5,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
 import com.patan.tmdbapp.model.SearchItem
+import com.patan.tmdbapp.ui.upcoming.MovieClickListener
 import com.patan.tmdbapp.util.loadCircleImage
 
-class SearchAdapter(private val searchList: List<SearchItem?>) :
+interface MovieClickListener {
+    fun onMovieClicked(movieId: Int?)
+}
+
+class SearchAdapter(
+    private val searchList: List<SearchItem?>,
+    private val movieClickListener: com.patan.tmdbapp.ui.search.MovieClickListener
+) :
     RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemHomeRecyclerViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -34,6 +42,10 @@ class SearchAdapter(private val searchList: List<SearchItem?>) :
         holder.binding.MovieTitle.text = search?.title
         holder.binding.MovieDesc.text = search?.overview
         holder.binding.MovieImage.loadCircleImage(search?.posterPath)
-        holder.binding.Rate.text=search?.voteAverage.toString()
+        holder.binding.Rate.text = search?.voteAverage.toString()
+
+        holder.binding.root.setOnClickListener {
+            movieClickListener.onMovieClicked(movieId = search?.id)
+        }
     }
 }

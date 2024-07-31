@@ -6,15 +6,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentRatedBinding
+import com.patan.tmdbapp.ui.popular.MovieClickListener
 
 
-class RatedFragment : Fragment()  {
+class RatedFragment : Fragment() {
     private var _binding: FragmentRatedBinding? = null
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<RatedViewModel>()
-    private lateinit var topListAdapter:RatedAdapter
+    private lateinit var topListAdapter: RatedAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,7 @@ class RatedFragment : Fragment()  {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding=FragmentRatedBinding.inflate(inflater,container,false)
+        _binding = FragmentRatedBinding.inflate(inflater, container, false)
 
         viewModel.getTop()
         observeEvents()
@@ -35,15 +37,25 @@ class RatedFragment : Fragment()  {
     }
 
     private fun observeEvents() {
-        viewModel.ratedList.observe(viewLifecycleOwner){ list ->
-            if(list.isNullOrEmpty()){
+        viewModel.ratedList.observe(viewLifecycleOwner) { list ->
+            if (list.isNullOrEmpty()) {
 
-            }else{
-                topListAdapter= RatedAdapter(list)
-                binding.recyclerView4.adapter=topListAdapter
+            } else {
+                topListAdapter = RatedAdapter(list, object : MovieClickListener {
+                    override fun onMovieClicked(movieId: Int?) {
+                        if(movieId !=null) {
+                            val action =
+                                RatedFragmentDirections.actionRatedFragmentToDetailsFragment(movieId)
+                            findNavController().navigate(action)
+                        }
+                    }
+
+                })
+                binding.recyclerView4.adapter = topListAdapter
             }
         }
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

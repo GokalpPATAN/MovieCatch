@@ -9,6 +9,7 @@ import com.patan.tmdbapp.network.RetrofitClient
 import com.patan.tmdbapp.util.Constants
 import kotlinx.coroutines.launch
 
+
 class DetailsViewModel : ViewModel() {
     val detailList: MutableLiveData<DetailsResponse> = MutableLiveData()
     val errorMesage: MutableLiveData<String?> = MutableLiveData()

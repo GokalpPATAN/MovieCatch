@@ -1,11 +1,12 @@
 package com.patan.tmdbapp.ui.upcoming
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentUpcomingBinding
 
 class UpcomingFragment : Fragment() {
@@ -25,7 +26,7 @@ class UpcomingFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding= FragmentUpcomingBinding.inflate(inflater,container,false)
+        _binding = FragmentUpcomingBinding.inflate(inflater, container, false)
 
         viewModel.getUp()
         observeEvents()
@@ -34,15 +35,22 @@ class UpcomingFragment : Fragment() {
     }
 
     private fun observeEvents() {
-    viewModel.upList.observe(viewLifecycleOwner){list ->
-        if (list.isNullOrEmpty()){
-
-        }else{
-            upcomingAdapter=UpcomingAdapter(list)
-            binding.recyclerView.adapter=upcomingAdapter
+        viewModel.upList.observe(viewLifecycleOwner) { list ->
+            if (list.isNullOrEmpty()) {
+            } else {
+                upcomingAdapter = UpcomingAdapter(list, object :MovieClickListener{
+                    override fun onMovieClicked(movieId: Int?) {
+                        if(movieId !=null) {
+                            val action =
+                                UpcomingFragmentDirections.actionUpcomingFragmentToDetailsFragment(movieId)
+                            findNavController().navigate(action)
+                        }
+                    }
+                })
+                binding.recyclerView.adapter = upcomingAdapter
+            }
         }
     }
-        }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
