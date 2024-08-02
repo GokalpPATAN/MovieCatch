@@ -3,7 +3,7 @@ package com.patan.tmdbapp.model
 
 import com.google.gson.annotations.SerializedName
 
-data class PopularResponse(
+data class Response(
     @SerializedName("results")
-    val popularItems: List<PopularItem?>?
+    val Items: List<Item?>?,
 )

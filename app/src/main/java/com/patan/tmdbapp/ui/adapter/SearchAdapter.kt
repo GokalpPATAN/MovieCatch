@@ -1,23 +1,20 @@
-package com.patan.tmdbapp.ui.home
+package com.patan.tmdbapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
-import com.patan.tmdbapp.model.NowPlayingItem
+import com.patan.tmdbapp.model.Item
 import com.patan.tmdbapp.util.loadCircleImage
 
-interface MovieClickListener {
-    fun onMovieClicked(movieId: Int?)
-}
 
-class HomeAdapter(
-    private val nowList: List<NowPlayingItem?>,
+class SearchAdapter(
+    private val searchList: List<Item?>,
     private val movieClickListener: MovieClickListener
-) : RecyclerView.Adapter<HomeAdapter.ViewHolder>() {
+) :
+    RecyclerView.Adapter<SearchAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemHomeRecyclerViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -31,20 +28,19 @@ class HomeAdapter(
     }
 
     override fun getItemCount(): Int {
-        return nowList.size
+        return searchList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val now = nowList[position]
+        val search = searchList[position]
 
-        holder.binding.MovieTitle.text = now?.title
-        holder.binding.MovieDesc.text = now?.overview
-        holder.binding.Rate.text = now?.voteAverage.toString()
-
-        holder.binding.MovieImage.loadCircleImage(now?.posterPath)
+        holder.binding.MovieTitle.text = search?.title
+        holder.binding.MovieDesc.text = search?.overview
+        holder.binding.MovieImage.loadCircleImage(search?.posterPath)
+        holder.binding.Rate.text = search?.voteAverage.toString()
 
         holder.binding.root.setOnClickListener {
-            movieClickListener.onMovieClicked(movieId = now?.id)
+            movieClickListener.onMovieClicked(movieId = search?.id)
         }
     }
 }

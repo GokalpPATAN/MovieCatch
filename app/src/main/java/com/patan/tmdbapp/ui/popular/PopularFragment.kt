@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentPopularBinding
+import com.patan.tmdbapp.ui.adapter.MainAdapter
+import com.patan.tmdbapp.ui.adapter.MovieClickListener
 
 
 class PopularFragment : Fragment() {
@@ -15,7 +17,7 @@ class PopularFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<PopularViewModel>()
-    private lateinit var popularListAdapter: PopularAdapter
+    private lateinit var popularListAdapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,16 +30,14 @@ class PopularFragment : Fragment() {
     ): View {
         _binding = FragmentPopularBinding.inflate(inflater, container, false)
 
-        viewModel.getPopular()
-        observeEvents()
         return binding.root
     }
 
     private fun observeEvents() {
-        viewModel.popularList.observe(viewLifecycleOwner) { list ->
+        viewModel.list.observe(viewLifecycleOwner) { list ->
             if (list.isNullOrEmpty()) {
             } else {
-                popularListAdapter = PopularAdapter(list, object : MovieClickListener {
+                popularListAdapter = MainAdapter(list, object : MovieClickListener {
                     override fun onMovieClicked(movieId: Int?) {
                         if(movieId !=null) {
                             val action =
@@ -49,6 +49,12 @@ class PopularFragment : Fragment() {
                 binding.recyclerView3.adapter = popularListAdapter
             }
         }
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getPopularList()
+        observeEvents()
     }
 
     override fun onDestroyView() {

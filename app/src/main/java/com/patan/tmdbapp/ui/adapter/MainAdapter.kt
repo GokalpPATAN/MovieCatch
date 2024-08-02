@@ -1,20 +1,17 @@
-package com.patan.tmdbapp.ui.upcoming
+package com.patan.tmdbapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
-import com.patan.tmdbapp.model.UpcomingItem
+import com.patan.tmdbapp.model.Item
 import com.patan.tmdbapp.util.loadCircleImage
 
-interface MovieClickListener {
-    fun onMovieClicked(movieId: Int?)
-}
 
-class UpcomingAdapter(
-    private val upList: List<UpcomingItem?>,
+class MainAdapter(
+    private val list: List<Item?>,
     private val movieClickListener: MovieClickListener
-) : RecyclerView.Adapter<UpcomingAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemHomeRecyclerViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -31,19 +28,19 @@ class UpcomingAdapter(
     }
 
     override fun getItemCount(): Int {
-        return upList.size
+        return list.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val up = upList[position]
+        val now = list[position]
+        holder.binding.MovieTitle.text = now?.title
+        holder.binding.MovieDesc.text = now?.overview
+        holder.binding.Rate.text = now?.voteAverage.toString()
 
-        holder.binding.MovieTitle.text = up?.title
-        holder.binding.MovieDesc.text = up?.overview
-        holder.binding.Rate.text = up?.voteAverage.toString()
-        holder.binding.MovieImage.loadCircleImage(up?.posterPath)
+        holder.binding.MovieImage.loadCircleImage(now?.posterPath)
 
         holder.binding.root.setOnClickListener {
-            movieClickListener.onMovieClicked(movieId = up?.id)
+            movieClickListener.onMovieClicked(movieId = now?.id)
         }
     }
 }

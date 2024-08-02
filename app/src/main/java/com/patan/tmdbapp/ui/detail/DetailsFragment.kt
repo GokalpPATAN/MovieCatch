@@ -7,9 +7,12 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.patan.tmdbapp.databinding.FragmentDetailsBinding
+import com.patan.tmdbapp.model.Genre
+import com.patan.tmdbapp.ui.adapter.DetailsAdapter
 import com.patan.tmdbapp.util.loadCircleImage
 
 class DetailsFragment : Fragment() {
@@ -28,45 +31,21 @@ class DetailsFragment : Fragment() {
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
-        viewModel.getDetails(movieId = args.movieId)
-        observeGenre()
-        observeEvents()
-        binding.button.setOnClickListener {
-            val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
-            findNavController().navigate(action)
-        }
         return binding.root
+
 
     }
 
     private fun observeEvents() {
 
-        viewModel.detailList.observe(viewLifecycleOwner) { movie ->
-            binding.textView.text = movie.title
-            binding.textView2.text = movie.overview
-            binding.imageView3.loadCircleImage(movie.posterPath)
-            binding.textView3.text = movie.releaseDate
-            binding.textView5.text = movie.status
-            binding.textView6.text = movie.voteAverage.toString()
-            binding.textView4.isVisible = true
-            binding.textView7.isVisible = true
-            binding.imageView.isVisible = true
-            binding.progressBar.isVisible = false
-
-        }
-    }
-
-    private fun observeGenre() {
-        viewModel.genreList.observe(viewLifecycleOwner) { list ->
-            if (list.isNullOrEmpty()) {
+        viewModel.detailList.observe(viewLifecycleOwner) { list1,->
+            val list2: List<Genre?> =
+            if (list1.isNullOrEmpty()) {
             } else {
-                genreListAdapter = DetailsAdapter(list)
-                binding.recyclerView3.adapter = genreListAdapter
-                binding.textView8.isVisible = true
+                genreListAdapter = DetailsAdapter(detailList = list1, genreList = list2)
             }
         }
     }
@@ -74,6 +53,12 @@ class DetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        viewModel.getDetails(movieId = args.movieId)
+        observeEvents()
+        binding.button.setOnClickListener {
+            val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
+            findNavController().navigate(action)
+        }
     }
 
 

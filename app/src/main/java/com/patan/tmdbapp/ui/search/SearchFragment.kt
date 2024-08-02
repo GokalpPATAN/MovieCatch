@@ -9,6 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentSearchBinding
+import com.patan.tmdbapp.ui.adapter.MovieClickListener
+import com.patan.tmdbapp.ui.adapter.SearchAdapter
 
 class SearchFragment : Fragment() {
 
@@ -26,24 +28,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSearchBinding.inflate(inflater, container, false)
-        binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query1: String?): Boolean {
-                val query = binding.searchview.query
-                viewModel.getSearch(query = query.toString())
-                observeEvents()
 
-                return true
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean {
-
-                return false
-            }
-
-        })
-        val query = binding.searchview.query
-        viewModel.getSearch(query = query.toString())
-        observeEvents()
         return binding.root
     }
 
@@ -69,5 +54,28 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query1: String?): Boolean {
+                val query = binding.searchview.query
+                viewModel.getSearch(query = query.toString())
+                observeEvents()
+
+                return true
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+
+                return false
+            }
+
+        })
+        val query = binding.searchview.query
+        viewModel.getSearch(query = query.toString())
+        observeEvents()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

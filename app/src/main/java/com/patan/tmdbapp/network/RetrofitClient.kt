@@ -19,14 +19,4 @@ object RetrofitClient {
 
         return Retrofit.Builder().baseUrl(Constants.BASE_URL).addConverterFactory(GsonConverterFactory.create()).client(client).build().create()
     }
-    fun getSearch():ApiService{
-        val interceptor = HttpLoggingInterceptor()
-        interceptor.setLevel(HttpLoggingInterceptor.Level.BODY)
-
-        val client: OkHttpClient=OkHttpClient.Builder().addInterceptor(interceptor)
-            .connectTimeout(60,TimeUnit.SECONDS)
-            .readTimeout(60,TimeUnit.SECONDS).build()
-
-        return Retrofit.Builder().baseUrl(Constants.SEARCH_URL).addConverterFactory(GsonConverterFactory.create()).client(client).build().create()
-    }
 }

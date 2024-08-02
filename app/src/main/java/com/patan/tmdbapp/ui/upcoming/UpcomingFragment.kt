@@ -8,13 +8,16 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentUpcomingBinding
+import com.patan.tmdbapp.ui.adapter.MainAdapter
+import com.patan.tmdbapp.ui.adapter.MovieClickListener
+import com.patan.tmdbapp.ui.popular.PopularViewModel
 
 class UpcomingFragment : Fragment() {
     private var _binding: FragmentUpcomingBinding? = null
     private val binding get() = _binding!!
 
-    private val viewModel by viewModels<UpcomingViewModel>()
-    private lateinit var upcomingAdapter: UpcomingAdapter
+    private val viewModel by viewModels<PopularViewModel>()
+    private lateinit var upcomingAdapter: MainAdapter
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -28,21 +31,22 @@ class UpcomingFragment : Fragment() {
     ): View {
         _binding = FragmentUpcomingBinding.inflate(inflater, container, false)
 
-        viewModel.getUp()
-        observeEvents()
+
 
         return binding.root
     }
 
     private fun observeEvents() {
-        viewModel.upList.observe(viewLifecycleOwner) { list ->
+        viewModel.list.observe(viewLifecycleOwner) { list ->
             if (list.isNullOrEmpty()) {
             } else {
-                upcomingAdapter = UpcomingAdapter(list, object :MovieClickListener{
+                upcomingAdapter = MainAdapter(list, object : MovieClickListener {
                     override fun onMovieClicked(movieId: Int?) {
-                        if(movieId !=null) {
+                        if (movieId != null) {
                             val action =
-                                UpcomingFragmentDirections.actionUpcomingFragmentToDetailsFragment(movieId)
+                                UpcomingFragmentDirections.actionUpcomingFragmentToDetailsFragment(
+                                    movieId
+                                )
                             findNavController().navigate(action)
                         }
                     }
@@ -54,7 +58,8 @@ class UpcomingFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        viewModel.getUpList()
+        observeEvents()
     }
 
     override fun onDestroyView() {
