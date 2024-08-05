@@ -4,16 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.MutableLiveData
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.patan.tmdbapp.databinding.FragmentDetailsBinding
-import com.patan.tmdbapp.model.Genre
 import com.patan.tmdbapp.ui.adapter.DetailsAdapter
-import com.patan.tmdbapp.util.loadCircleImage
 
 class DetailsFragment : Fragment() {
 
@@ -41,11 +37,12 @@ class DetailsFragment : Fragment() {
 
     private fun observeEvents() {
 
-        viewModel.detailList.observe(viewLifecycleOwner) { list1,->
-            val list2: List<Genre?> =
+        viewModel.genreList.observe(viewLifecycleOwner) { list1 ->
             if (list1.isNullOrEmpty()) {
             } else {
-                genreListAdapter = DetailsAdapter(detailList = list1, genreList = list2)
+                genreListAdapter = DetailsAdapter(genreList = list1)
+                println(args.movieId)
+                binding.recyclerView3.adapter = genreListAdapter
             }
         }
     }

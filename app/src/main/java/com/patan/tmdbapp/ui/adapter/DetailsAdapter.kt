@@ -12,7 +12,7 @@ import com.patan.tmdbapp.model.Item
 import com.patan.tmdbapp.util.loadCircleImage
 
 
-class DetailsAdapter(private val detailList: List<Item?>,private val genreList: List<Genre?>) :
+class DetailsAdapter(private val genreList: List<Genre?>) :
     RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
     class ViewHolder(
         val binding: ItemDetailsRecyclerViewBinding,
@@ -38,15 +38,8 @@ class DetailsAdapter(private val detailList: List<Item?>,private val genreList: 
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val genre = genreList[position]
-        val detail = detailList[position]
 
         holder.binding.Genre.text = genre?.name
-        holder.binding2.textView.text = detail?.title
-        holder.binding2.textView2.text = detail?.overview
-        holder.binding2.imageView3.loadCircleImage(detail?.posterPath)
-        holder.binding2.textView3.text = detail?.releaseDate
-        holder.binding2.textView5.text = detail?.status
-        holder.binding2.textView6.text = detail?.voteAverage.toString()
         holder.binding2.textView4.isVisible = true
         holder.binding2.textView7.isVisible = true
         holder.binding2.imageView.isVisible = true

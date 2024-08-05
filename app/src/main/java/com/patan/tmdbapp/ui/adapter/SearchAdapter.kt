@@ -1,4 +1,4 @@
-package com.patan.tmdbapp.ui.adapter
+/* package com.patan.tmdbapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -43,4 +43,4 @@ class SearchAdapter(
             movieClickListener.onMovieClicked(movieId = search?.id)
         }
     }
-}
+} */

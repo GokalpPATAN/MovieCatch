@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentSearchBinding
+import com.patan.tmdbapp.ui.adapter.MainAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
-import com.patan.tmdbapp.ui.adapter.SearchAdapter
 
 class SearchFragment : Fragment() {
 
@@ -18,7 +18,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<SearchViewModel>()
-    private lateinit var searchAdapter: SearchAdapter
+    private lateinit var searchAdapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +37,13 @@ class SearchFragment : Fragment() {
             if (list.isNullOrEmpty()) {
 
             } else {
-                searchAdapter = SearchAdapter(list, object : MovieClickListener {
+                searchAdapter = MainAdapter(list, object : MovieClickListener {
                     override fun onMovieClicked(movieId: Int?) {
-                        if(movieId !=null) {
+                        if (movieId != null) {
                             val action =
-                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(movieId)
+                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
+                                    movieId
+                                )
                             findNavController().navigate(action)
                         }
                     }
@@ -56,16 +58,18 @@ class SearchFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query1: String?): Boolean {
-                val query = binding.searchview.query
-                viewModel.getSearch(query = query.toString())
-                observeEvents()
 
-                return true
+
+                return false
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-
-                return false
+                if (query?.length!! >= 3) {
+                    val query = binding.searchview.query
+                    viewModel.getSearch(query = query.toString())
+                    observeEvents()
+                }
+                return true
             }
 
         })

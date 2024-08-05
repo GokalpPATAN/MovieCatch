@@ -1,8 +1,10 @@
 package com.patan.tmdbapp.ui.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.patan.tmdbapp.databinding.FragmentHomeBinding
 import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
 import com.patan.tmdbapp.model.Item
 import com.patan.tmdbapp.util.loadCircleImage
@@ -19,11 +21,8 @@ class MainAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
-            ItemHomeRecyclerViewBinding.inflate(
-                LayoutInflater.from(parent.context),
-                parent,
-                false
-            )
+            ItemHomeRecyclerViewBinding.inflate(LayoutInflater.from(parent.context), parent, false),
+
         )
     }
 
@@ -39,7 +38,8 @@ class MainAdapter(
 
         holder.binding.MovieImage.loadCircleImage(now?.posterPath)
 
-        holder.binding.root.setOnClickListener {
+        holder.binding.root.setOnClickListener(){
+            Log.d("MainAdapter", "Movie clicked: ${now?.id}")
             movieClickListener.onMovieClicked(movieId = now?.id)
         }
     }

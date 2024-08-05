@@ -3,6 +3,7 @@ package com.patan.tmdbapp.ui.detail
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.patan.tmdbapp.model.Genre
 import com.patan.tmdbapp.model.Item
 import com.patan.tmdbapp.network.RetrofitClient
 import com.patan.tmdbapp.util.Constants
@@ -10,7 +11,7 @@ import kotlinx.coroutines.launch
 
 
 class DetailsViewModel : ViewModel() {
-    val detailList: MutableLiveData<List<Item?>?> = MutableLiveData()
+    val genreList: MutableLiveData<List<Genre?>?> = MutableLiveData()
     val errorMesage: MutableLiveData<String?> = MutableLiveData()
     val loading = MutableLiveData(false)
 
@@ -21,7 +22,7 @@ class DetailsViewModel : ViewModel() {
                 val response = RetrofitClient.getClient()
                     .getDetails(movieId = movieId.toString(), token = Constants.BEARER_DETAILS)
                 if (response.isSuccessful) {
-                    detailList.postValue(response.body()?.Items)
+                    genreList.postValue(response.body()?.genres)
                 } else {
                     if (response.message().isNullOrEmpty()) {
                         errorMesage.value = "An unknown error occured"
