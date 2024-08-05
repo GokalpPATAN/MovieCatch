@@ -1,4 +1,4 @@
-package com.patan.tmdbapp.ui.search
+package com.patan.tmdbapp.ui.ViewModels
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel

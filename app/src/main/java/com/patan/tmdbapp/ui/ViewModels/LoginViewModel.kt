@@ -1,4 +1,4 @@
-package com.patan.tmdbapp.ui.login
+package com.patan.tmdbapp.ui.ViewModels
 
 import androidx.lifecycle.ViewModel
 

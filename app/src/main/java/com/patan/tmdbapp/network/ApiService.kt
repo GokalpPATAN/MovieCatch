@@ -1,6 +1,6 @@
 package com.patan.tmdbapp.network
 
-import com.patan.tmdbapp.model.DetailsResponse
+import com.patan.tmdbapp.model.Item
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -16,7 +16,7 @@ interface ApiService {
     suspend fun getDetails(
         @Path("movieId") movieId: String,
         @Header("Authorization") token: String
-    ): Response<DetailsResponse>
+    ): Response<Item>
 
 
     @GET("3/search/movie")

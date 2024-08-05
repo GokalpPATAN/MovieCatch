@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/HomeFragment"
-        android:name="com.patan.tmdbapp.ui.popular.HomeFragment"
+        android:name="com.patan.tmdbapp.ui.Fragments.HomeFragment"
         android:label="Popular"
         tools:layout="@layout/fragment_home">
         <action

@@ -16,7 +16,6 @@ class DetailsAdapter(private val genreList: List<Genre?>) :
     RecyclerView.Adapter<DetailsAdapter.ViewHolder>() {
     class ViewHolder(
         val binding: ItemDetailsRecyclerViewBinding,
-        val binding2: FragmentDetailsBinding
     ) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -28,7 +27,7 @@ class DetailsAdapter(private val genreList: List<Genre?>) :
                 LayoutInflater.from(parent.context),
                 parent,
                 false
-            ), FragmentDetailsBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+            ),
         )
     }
 
@@ -40,10 +39,6 @@ class DetailsAdapter(private val genreList: List<Genre?>) :
         val genre = genreList[position]
 
         holder.binding.Genre.text = genre?.name
-        holder.binding2.textView4.isVisible = true
-        holder.binding2.textView7.isVisible = true
-        holder.binding2.imageView.isVisible = true
-        holder.binding2.progressBar.isVisible = false
 
     }
 }

@@ -1,4 +1,4 @@
-package com.patan.tmdbapp.ui.login
+package com.patan.tmdbapp.ui.Fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.patan.tmdbapp.databinding.ActivitySecondBinding
+import com.patan.tmdbapp.ui.ViewModels.LoginViewModel
 
 class LoginFragment : Fragment() {
     private var _binding: ActivitySecondBinding? = null
