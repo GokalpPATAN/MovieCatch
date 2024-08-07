@@ -7,19 +7,15 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.patan.tmdbapp.MainActivity
 import com.patan.tmdbapp.databinding.FragmentLoginBinding
-import com.patan.tmdbapp.ui.ViewModels.LoginViewModel
 
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
     private lateinit var auth: FirebaseAuth
-    private val viewModel: LoginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,7 +54,7 @@ class LoginFragment : Fragment() {
                         "Login successful.",
                         Toast.LENGTH_SHORT,
                     ).show()
-                    LoginUser.user = auth.currentUser!!
+                    val user = auth.currentUser!!
                 } else {
                     Toast.makeText(
                         requireContext(),
@@ -74,8 +70,4 @@ class LoginFragment : Fragment() {
         super.onDestroyView()
     }
 
-}
-
-object LoginUser {
-    lateinit var user: FirebaseUser
 }

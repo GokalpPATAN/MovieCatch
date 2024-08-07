@@ -54,7 +54,6 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val responsePath = arguments?.getString("topath") ?: "now_playing"
-        println(responsePath)
         viewModel.getPopularList(topath = responsePath)
         observeEvents()
     }

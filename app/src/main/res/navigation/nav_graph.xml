@@ -54,5 +54,9 @@
         android:id="@+id/userSettingsFragment"
         android:name="com.patan.tmdbapp.ui.Fragments.UserSettingsFragment"
         android:label="fragment_user_settings"
-        tools:layout="@layout/fragment_user_settings" />
+        tools:layout="@layout/fragment_user_settings" >
+        <action
+            android:id="@+id/action_userSettingsFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
 </navigation>

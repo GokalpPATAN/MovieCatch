@@ -23,7 +23,7 @@ class MainAdapter(
         return ViewHolder(
             ItemHomeRecyclerViewBinding.inflate(LayoutInflater.from(parent.context), parent, false),
 
-        )
+            )
     }
 
     override fun getItemCount(): Int {

@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.databinding.FragmentDetailsBinding
 import com.patan.tmdbapp.network.FirebaseClientImpl
 import com.patan.tmdbapp.ui.adapter.DetailsAdapter
+import com.patan.tmdbapp.ui.adapter.MainAdapter
 import com.patan.tmdbapp.util.loadCircleImage
 
 class DetailsFragment : Fragment() {
@@ -22,6 +23,7 @@ class DetailsFragment : Fragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private lateinit var genreListAdapter: DetailsAdapter
+    private lateinit var popularListAdapter: MainAdapter
     private val args by navArgs<DetailsFragmentArgs>()
     private lateinit var auth: FirebaseAuth
 
@@ -71,9 +73,7 @@ class DetailsFragment : Fragment() {
         viewModel.isFavourite.observe(viewLifecycleOwner) { isFavourite ->
             binding.FavCheck.isChecked = isFavourite
         }
-        viewModel.movieIds.observe(viewLifecycleOwner){
-            println(it)
-        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -81,6 +81,7 @@ class DetailsFragment : Fragment() {
         viewModel.getDetails(movieId = args.movieId)
         viewModel.checkFavourite(movieId = args.movieId, userEmail = auth.currentUser?.email ?: "")
         observeEvents()
+
 
         binding.FavCheck.setOnClickListener {
             val userEmail = auth.currentUser?.email ?: return@setOnClickListener

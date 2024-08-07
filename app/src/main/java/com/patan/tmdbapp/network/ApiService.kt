@@ -18,6 +18,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<Item>
 
+    @GET("3/movie/{movieId}")
+    suspend fun getMovieIds(
+        @Path("movieId") movieId: String,
+        @Header("Authorization") token: String
+    ): Response<com.patan.tmdbapp.model.Response>
+
 
     @GET("3/search/movie")
     suspend fun getSearch(

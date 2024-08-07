@@ -14,7 +14,7 @@ class DetailsViewModel(private val firebaseClient: FirebaseClient) : ViewModel()
     val errorMessage: MutableLiveData<String?> = MutableLiveData()
     val isFavourite: MutableLiveData<Boolean> = MutableLiveData()
     val movieIds: MutableLiveData<List<String>> = MutableLiveData()
-
+    val IdsList: MutableLiveData<List<Item?>?> = MutableLiveData()
     fun getDetails(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -22,6 +22,21 @@ class DetailsViewModel(private val firebaseClient: FirebaseClient) : ViewModel()
                     .getDetails(movieId = movieId.toString(), token = Constants.BEARER_DETAILS)
                 if (response.isSuccessful) {
                     detailList.postValue(response.body())
+                } else {
+                    errorMessage.value = response.message().takeIf { it.isNotEmpty() } ?: "An unknown error occurred"
+                }
+            } catch (e: Exception) {
+                errorMessage.value = e.message
+            }
+        }
+    }
+    fun getMoviesFromId(movieId: Int) {
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.getClient()
+                    .getMovieIds(movieId = movieId.toString(), token = Constants.BEARER_DETAILS)
+                if (response.isSuccessful) {
+                    IdsList.postValue(response.body()?.Items)
                 } else {
                     errorMessage.value = response.message().takeIf { it.isNotEmpty() } ?: "An unknown error occurred"
                 }
