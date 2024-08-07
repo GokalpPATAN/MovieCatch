@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_HomeFragment_self"
             app:destination="@id/HomeFragment" />
+        <action
+            android:id="@+id/action_HomeFragment_to_userSettingsFragment"
+            app:destination="@id/userSettingsFragment" />
     </fragment>
     <fragment
         android:id="@+id/detailsFragment"
@@ -47,4 +50,9 @@
             android:id="@+id/action_searchFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/userSettingsFragment"
+        android:name="com.patan.tmdbapp.ui.Fragments.UserSettingsFragment"
+        android:label="fragment_user_settings"
+        tools:layout="@layout/fragment_user_settings" />
 </navigation>

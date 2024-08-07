@@ -1,7 +1,7 @@
 package com.patan.tmdbapp
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.patan.tmdbapp.databinding.ActivitySecondBinding
 
 class SecondActivity : AppCompatActivity() {
@@ -11,4 +11,5 @@ class SecondActivity : AppCompatActivity() {
         binding = ActivitySecondBinding.inflate(layoutInflater)
         setContentView(binding.root)
     }
+
 }

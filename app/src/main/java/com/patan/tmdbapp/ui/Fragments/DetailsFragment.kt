@@ -7,9 +7,13 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.databinding.FragmentDetailsBinding
+import com.patan.tmdbapp.network.FirebaseClientImpl
 import com.patan.tmdbapp.ui.adapter.DetailsAdapter
 import com.patan.tmdbapp.util.loadCircleImage
 
@@ -17,15 +21,24 @@ class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
-
-    private val viewModel by viewModels<DetailsViewModel>()
     private lateinit var genreListAdapter: DetailsAdapter
     private val args by navArgs<DetailsFragmentArgs>()
+    private lateinit var auth: FirebaseAuth
 
+    private val viewModel: DetailsViewModel by viewModels {
+        object : ViewModelProvider.Factory {
+            override fun <T : ViewModel> create(modelClass: Class<T>): T {
+                if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
+                    return DetailsViewModel(FirebaseClientImpl()) as T
+                }
+                throw IllegalArgumentException("Unknown ViewModel class")
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        auth = FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(
@@ -33,12 +46,9 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
-
-
     }
 
     private fun observeEvents() {
-
         viewModel.detailList.observe(viewLifecycleOwner) { movie ->
             binding.textView.text = movie?.title
             binding.textView2.text = movie?.overview
@@ -47,10 +57,8 @@ class DetailsFragment : Fragment() {
             binding.textView6.text = movie?.voteAverage.toString()
             binding.imageView3.loadCircleImage(movie?.posterPath)
             val list1 = movie?.genres
-            if (list1.isNullOrEmpty()) {
-            } else {
+            if (!list1.isNullOrEmpty()) {
                 genreListAdapter = DetailsAdapter(list1)
-                println(args.movieId)
                 binding.recyclerView3.adapter = genreListAdapter
             }
             binding.progressBar.isVisible = false
@@ -58,24 +66,38 @@ class DetailsFragment : Fragment() {
             binding.textView4.isVisible = true
             binding.textView7.isVisible = true
             binding.textView8.isVisible = true
+        }
 
+        viewModel.isFavourite.observe(viewLifecycleOwner) { isFavourite ->
+            binding.FavCheck.isChecked = isFavourite
+        }
+        viewModel.movieIds.observe(viewLifecycleOwner){
+            println(it)
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getDetails(movieId = args.movieId)
+        viewModel.checkFavourite(movieId = args.movieId, userEmail = auth.currentUser?.email ?: "")
         observeEvents()
+
+        binding.FavCheck.setOnClickListener {
+            val userEmail = auth.currentUser?.email ?: return@setOnClickListener
+            if (binding.FavCheck.isChecked) {
+                viewModel.addFavourite(movieId = args.movieId, userEmail)
+            } else {
+                viewModel.deleteFavourite(movieId = args.movieId, userEmail)
+            }
+        }
         binding.button.setOnClickListener {
             val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
             findNavController().navigate(action)
         }
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
-
         _binding = null
     }
 }
-
-
