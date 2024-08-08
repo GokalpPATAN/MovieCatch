@@ -1,5 +1,6 @@
 package com.patan.tmdbapp.ui.detail
 
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -14,7 +15,8 @@ class DetailsViewModel(private val firebaseClient: FirebaseClient) : ViewModel()
     val errorMessage: MutableLiveData<String?> = MutableLiveData()
     val isFavourite: MutableLiveData<Boolean> = MutableLiveData()
     val movieIds: MutableLiveData<List<String>> = MutableLiveData()
-    val IdsList: MutableLiveData<List<Item?>?> = MutableLiveData()
+    val IdsList: MutableLiveData<Item?> = MutableLiveData()
+    val commentList: MutableLiveData<List<String>> =MutableLiveData()
     fun getDetails(movieId: Int) {
         viewModelScope.launch {
             try {
@@ -30,13 +32,13 @@ class DetailsViewModel(private val firebaseClient: FirebaseClient) : ViewModel()
             }
         }
     }
-    fun getMoviesFromId(movieId: Int) {
+    fun getMoviesFromApi(movieId: Int) {
         viewModelScope.launch {
             try {
                 val response = RetrofitClient.getClient()
                     .getMovieIds(movieId = movieId.toString(), token = Constants.BEARER_DETAILS)
                 if (response.isSuccessful) {
-                    IdsList.postValue(response.body()?.Items)
+                    IdsList.postValue(response.body())
                 } else {
                     errorMessage.value = response.message().takeIf { it.isNotEmpty() } ?: "An unknown error occurred"
                 }
@@ -59,9 +61,17 @@ class DetailsViewModel(private val firebaseClient: FirebaseClient) : ViewModel()
             isFavourite.postValue(isFav)
         }
     }
-    fun getMovieIds(userEmail: String){
+    fun getMovieIdsFromDatabase(userEmail: String){
         firebaseClient.getMovieId(userEmail) {
             it -> movieIds.postValue(it)
+        }
+    }
+    fun addComment(movieName:String,userEmail: String,comment:String){
+        firebaseClient.addComment(movieName,userEmail,comment)
+    }
+    fun getCommentsFromDatabase(movieId: Int, movieName: String){
+        firebaseClient.getComment(movieName){
+            it -> commentList.postValue(it)
         }
     }
 }

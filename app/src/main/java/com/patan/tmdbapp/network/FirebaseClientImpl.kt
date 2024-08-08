@@ -12,8 +12,7 @@ class FirebaseClientImpl : FirebaseClient {
             "movieId" to movieId
         )
         db.collection("users").document(userEmail ?: "").set(
-            mapOf("$movieId" to movieData),
-            SetOptions.merge()
+            mapOf("$movieId" to movieData), SetOptions.merge()
         )
     }
 
@@ -35,6 +34,7 @@ class FirebaseClientImpl : FirebaseClient {
             }
         }
     }
+
     override fun getMovieId(userEmail: String, callback: (List<String>) -> Unit) {
         val db = Firebase.firestore
         val docRef = db.collection("users").document(userEmail)
@@ -45,5 +45,36 @@ class FirebaseClientImpl : FirebaseClient {
                 callback(emptyList())
             }
         }
+    }
+
+    override fun getComment(movieName: String, callback: (List<String>) -> Unit) {
+        val db = Firebase.firestore
+        val docRef = db.collection("comment").document(movieName)
+        docRef.get().addOnSuccessListener { document ->
+            if (document.exists()) {
+                val comments = document.data?.mapNotNull { entry ->
+                    val value = entry.value
+                    if (value is Map<*, *>) {
+                        value["comment"] as? String
+                    } else {
+                        value as? String
+                    }
+                } ?: emptyList()
+                callback(comments)
+            } else {
+                callback(emptyList())
+            }
+        }
+    }
+
+    override fun addComment(movieName: String, userEmail: String, comment: String) {
+        val db = Firebase.firestore
+        val movieData = hashMapOf(
+            "comment" to comment
+        )
+        db.collection("comment").document(movieName).set(
+            mapOf(userEmail to movieData), SetOptions.merge()
+        )
+
     }
 }

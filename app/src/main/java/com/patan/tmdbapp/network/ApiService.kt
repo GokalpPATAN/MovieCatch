@@ -22,7 +22,7 @@ interface ApiService {
     suspend fun getMovieIds(
         @Path("movieId") movieId: String,
         @Header("Authorization") token: String
-    ): Response<com.patan.tmdbapp.model.Response>
+    ): Response<Item>
 
 
     @GET("3/search/movie")
