@@ -44,8 +44,7 @@ class LoginFragment : Fragment() {
     fun login(view: View) {
         val email = binding.email.text.toString()
         val password = binding.password.text.toString()
-        auth.signInWithEmailAndPassword(email, password)
-            .addOnCompleteListener { task ->
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     val intent = Intent(activity, MainActivity::class.java)
                     activity?.startActivity(intent)
@@ -65,6 +64,7 @@ class LoginFragment : Fragment() {
             }
 
     }
+
     override fun onDestroyView() {
         super.onDestroyView()
     }

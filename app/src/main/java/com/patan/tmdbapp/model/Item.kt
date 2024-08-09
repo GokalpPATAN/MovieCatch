@@ -36,4 +36,4 @@ data class Item(
     val voteAverage: Double?,
     @SerializedName("original_name")
     val originalName: String?,
-    )
+)

@@ -22,8 +22,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         createBottomNavigation()
         auth = FirebaseAuth.getInstance()
-        val user = auth.currentUser
-
 
         val navHostFragment =
             supportFragmentManager.findFragmentById(R.id.fragmentContainerView2) as NavHostFragment

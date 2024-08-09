@@ -2,14 +2,9 @@ package com.patan.tmdbapp.ui.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
-import com.patan.tmdbapp.databinding.FragmentDetailsBinding
 import com.patan.tmdbapp.databinding.ItemDetailsRecyclerViewBinding
-import com.patan.tmdbapp.databinding.ItemHomeRecyclerViewBinding
 import com.patan.tmdbapp.model.Genre
-import com.patan.tmdbapp.model.Item
-import com.patan.tmdbapp.util.loadCircleImage
 
 
 class DetailsAdapter(private val genreList: List<Genre?>) :

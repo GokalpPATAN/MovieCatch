@@ -76,7 +76,7 @@ class DetailsViewModel(private val firebaseClient: FirebaseClient) : ViewModel()
     }
 
     fun getCommentsFromDatabase(movieName: String) {
-        firebaseClient.getComment(movieName) { comment,user ->
+        firebaseClient.getComment(movieName) { comment, user ->
             commentList.postValue(comment)
             userName.postValue(user)
         }

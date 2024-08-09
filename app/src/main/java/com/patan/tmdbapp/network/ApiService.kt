@@ -10,7 +10,10 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("3/movie/{topath}")
-    suspend fun getPopular(@Path("topath") topath: String, @Header("Authorization") token: String): Response<com.patan.tmdbapp.model.Response>
+    suspend fun getPopular(
+        @Path("topath") topath: String,
+        @Header("Authorization") token: String
+    ): Response<com.patan.tmdbapp.model.Response>
 
     @GET("3/movie/{movieId}")
     suspend fun getDetails(
@@ -26,7 +29,7 @@ interface ApiService {
 
     @GET("3/search/movie")
     suspend fun getSearch(
-        @Query("query") queryString: String,@Header("Authorization") token: String
+        @Query("query") queryString: String, @Header("Authorization") token: String
     ): Response<com.patan.tmdbapp.model.Response>
 
     @GET("3/discover/tv?language=en-US&page=1&sort_by=popularity.desc")

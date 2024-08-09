@@ -16,9 +16,9 @@
         android:clickable="true"
         android:src="@drawable/baseline_favorite_24"
         android:visibility="invisible"
-        tools:visibility="visible"
         app:layout_constraintStart_toEndOf="@+id/userSettings"
-        app:layout_constraintTop_toTopOf="@+id/userSettings" />
+        app:layout_constraintTop_toTopOf="@+id/userSettings"
+        tools:visibility="visible" />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomnav"

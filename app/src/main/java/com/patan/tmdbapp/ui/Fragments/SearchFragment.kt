@@ -12,7 +12,6 @@ import com.patan.tmdbapp.databinding.FragmentSearchBinding
 import com.patan.tmdbapp.ui.ViewModels.SearchViewModel
 import com.patan.tmdbapp.ui.adapter.MainAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
-import com.patan.tmdbapp.ui.ViewModels.HomeViewModel
 
 
 class SearchFragment : Fragment() {
@@ -21,7 +20,6 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<SearchViewModel>()
-    private val viewModelPopular by viewModels<HomeViewModel>()
     private lateinit var searchAdapter: MainAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {

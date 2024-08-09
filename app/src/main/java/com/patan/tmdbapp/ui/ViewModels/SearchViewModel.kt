@@ -33,11 +33,11 @@ class SearchViewModel : ViewModel() {
             }
         }
     }
-    fun getTV(){
+
+    fun getTV() {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.getClient()
-                    .getTV(token = Constants.BEARER_KEY)
+                val response = RetrofitClient.getClient().getTV(token = Constants.BEARER_KEY)
                 if (response.isSuccessful) {
                     tvList.postValue(response.body()?.Items)
                 } else {
