@@ -32,13 +32,21 @@ class MainAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val now = list[position]
-        holder.binding.MovieTitle.text = now?.title
-        holder.binding.MovieDesc.text = now?.overview
+        if (now?.title.isNullOrEmpty()) {
+            holder.binding.MovieTitle.text = now?.originalName
+        } else {
+            holder.binding.MovieTitle.text = now?.title
+        }
+        if (now?.overview.isNullOrEmpty()) {
+            holder.binding.MovieDesc.text = "There is no overview for this TV serie."
+        } else {
+            holder.binding.MovieDesc.text = now?.overview
+        }
         holder.binding.Rate.text = now?.voteAverage.toString()
 
         holder.binding.MovieImage.loadCircleImage(now?.posterPath)
 
-        holder.binding.root.setOnClickListener(){
+        holder.binding.root.setOnClickListener() {
             Log.d("MainAdapter", "Movie clicked: ${now?.id}")
             movieClickListener.onMovieClicked(movieId = now?.id)
         }

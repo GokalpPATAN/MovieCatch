@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.patan.tmdbapp.databinding.ItemCommentRecyclerViewBinding
 
 
-class CommentAdapter(private val commentList: List<String> ) :
+class CommentAdapter(private val commentList: List<String>,private val user: List<String>) :
     RecyclerView.Adapter<CommentAdapter.ViewHolder>() {
     class ViewHolder(
         val binding: ItemCommentRecyclerViewBinding,
@@ -31,8 +31,9 @@ class CommentAdapter(private val commentList: List<String> ) :
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val comment = commentList[position]
+        val username=user[position]
 
-        holder.binding.textView9.text = comment
+        holder.binding.textView9.text = "$username\n"+"$comment"
 
     }
 }

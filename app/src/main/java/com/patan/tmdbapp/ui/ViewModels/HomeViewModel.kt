@@ -16,7 +16,7 @@ class HomeViewModel : ViewModel() {
         viewModelScope.launch {
             val responsePopular =
                 RetrofitClient.getClient()
-                    .getPopular(topath = topath.toString(), token = Constants.BEARER_POPULAR)
+                    .getPopular(topath = topath.toString(), token = Constants.BEARER_KEY)
 
             try {
                 if (responsePopular.isSuccessful) {

@@ -36,7 +36,25 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    private fun observeEvents() {
+    private fun observeEventsForMovies() {
+        viewModel.tvList.observe(viewLifecycleOwner) { list ->
+            if (list.isNullOrEmpty()) {
+            } else {
+                searchAdapter = MainAdapter(list, object : MovieClickListener {
+                    override fun onMovieClicked(movieId: Int?) {
+                        if (movieId != null) {
+                            val action =
+                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
+                                    movieId
+                                )
+                            findNavController().navigate(action)
+                        }
+                    }
+
+                })
+                binding.RecyclerView5.adapter = searchAdapter
+            }
+        }
         viewModel.searchList.observe(viewLifecycleOwner) { list ->
             if (list.isNullOrEmpty()) {
             } else {
@@ -59,6 +77,8 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getTV()
+        observeEventsForMovies()
         binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query1: String?): Boolean {
                 return false
@@ -68,15 +88,13 @@ class SearchFragment : Fragment() {
                 if (query?.length!! >= 3) {
                     val query = binding.searchview.query
                     viewModel.getSearch(query = query.toString())
-                    observeEvents()
+                    observeEventsForMovies()
                 }
                 return true
             }
 
         })
-        val query = binding.searchview.query
-        viewModel.getSearch(query = query.toString())
-        observeEvents()
+
     }
 
     override fun onDestroyView() {

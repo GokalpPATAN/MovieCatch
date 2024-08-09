@@ -6,5 +6,6 @@ interface FirebaseClient {
     fun isFavourite(movieId: Int, userEmail: String, callback: (Boolean) -> Unit)
     fun getMovieId(userEmail: String, callback: (List<String>) -> Unit)
     fun addComment(movieName: String, userEmail: String, comment: String)
-    fun getComment(movieName: String, callback: (List<String>) -> Unit)
+    fun getComment(movieName: String, callback: (List<String>, List<String>) -> Unit)
+
 }

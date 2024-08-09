@@ -24,9 +24,12 @@ interface ApiService {
         @Header("Authorization") token: String
     ): Response<Item>
 
-
     @GET("3/search/movie")
     suspend fun getSearch(
         @Query("query") queryString: String,@Header("Authorization") token: String
     ): Response<com.patan.tmdbapp.model.Response>
+
+    @GET("3/discover/tv?language=en-US&page=1&sort_by=popularity.desc")
+    suspend fun getTV(@Header("Authorization") token: String): Response<com.patan.tmdbapp.model.Response>
+
 }

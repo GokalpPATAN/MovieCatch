@@ -74,13 +74,15 @@ class DetailsFragment : Fragment() {
                 binding.FavCheck.isChecked = isFavourite
 
                 viewModel.getCommentsFromDatabase(
-                    args.movieId, movieName = movie?.title.toString()
+                    movieName = movie?.title.toString()
                 )
-                viewModel.commentList.observe(viewLifecycleOwner) { comments ->
-                    if (comments.isNullOrEmpty()) {
-                    } else {
-                        commentAdapter = CommentAdapter(comments)
-                        binding.RecyclerView8.adapter = commentAdapter
+                viewModel.userName.observe(viewLifecycleOwner) {
+                    viewModel.commentList.observe(viewLifecycleOwner) { comments ->
+                        if (comments.isNullOrEmpty()) {
+                        } else {
+                            commentAdapter = CommentAdapter(it, comments)
+                            binding.RecyclerView8.adapter = commentAdapter
+                        }
                     }
                 }
             }
@@ -107,6 +109,7 @@ class DetailsFragment : Fragment() {
         binding.button.setOnClickListener {
             val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
             findNavController().navigate(action)
+
         }
         binding.button2.setOnClickListener {
             val userEmail = auth.currentUser?.email ?: return@setOnClickListener
@@ -120,13 +123,15 @@ class DetailsFragment : Fragment() {
                         val movieName = movie?.title.toString()
                         viewModel.addComment(movieName, userEmail, comment = comment)
                         viewModel.getCommentsFromDatabase(
-                            args.movieId, movieName = movie?.title.toString()
+                            movieName = movie?.title.toString()
                         )
-                        viewModel.commentList.observe(viewLifecycleOwner) { comments ->
-                            if (comments.isNullOrEmpty()) {
-                            } else {
-                                commentAdapter = CommentAdapter(comments)
-                                binding.RecyclerView8.adapter = commentAdapter
+                        viewModel.userName.observe(viewLifecycleOwner) {
+                            viewModel.commentList.observe(viewLifecycleOwner) { comments ->
+                                if (comments.isNullOrEmpty()) {
+                                } else {
+                                    commentAdapter = CommentAdapter(it, comments)
+                                    binding.RecyclerView8.adapter = commentAdapter
+                                }
                             }
                         }
                     }

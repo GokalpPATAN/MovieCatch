@@ -10,15 +10,36 @@ import kotlinx.coroutines.launch
 
 class SearchViewModel : ViewModel() {
     val searchList: MutableLiveData<List<Item?>?> = MutableLiveData()
+    val tvList: MutableLiveData<List<Item?>?> = MutableLiveData()
     val errorMesage: MutableLiveData<String?> = MutableLiveData()
 
     fun getSearch(query: String) {
         viewModelScope.launch {
             try {
                 val response = RetrofitClient.getClient()
-                    .getSearch(queryString = query, token = Constants.API_KEY)
+                    .getSearch(queryString = query, token = Constants.BEARER_KEY)
                 if (response.isSuccessful) {
                     searchList.postValue(response.body()?.Items)
+                } else {
+                    if (response.message().isNullOrEmpty()) {
+                        errorMesage.value = "An unknown error occured"
+                    } else {
+                        errorMesage.value = response.message()
+                    }
+                }
+
+            } catch (e: Exception) {
+                errorMesage.value = e.message
+            }
+        }
+    }
+    fun getTV(){
+        viewModelScope.launch {
+            try {
+                val response = RetrofitClient.getClient()
+                    .getTV(token = Constants.BEARER_KEY)
+                if (response.isSuccessful) {
+                    tvList.postValue(response.body()?.Items)
                 } else {
                     if (response.message().isNullOrEmpty()) {
                         errorMesage.value = "An unknown error occured"

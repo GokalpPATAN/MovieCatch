@@ -65,7 +65,6 @@ class LoginFragment : Fragment() {
             }
 
     }
-
     override fun onDestroyView() {
         super.onDestroyView()
     }

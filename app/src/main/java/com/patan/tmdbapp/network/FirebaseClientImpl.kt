@@ -47,11 +47,14 @@ class FirebaseClientImpl : FirebaseClient {
         }
     }
 
-    override fun getComment(movieName: String, callback: (List<String>) -> Unit) {
+    override fun getComment(movieName: String, callback: (List<String>, List<String>) -> Unit) {
         val db = Firebase.firestore
         val docRef = db.collection("comment").document(movieName)
         docRef.get().addOnSuccessListener { document ->
+
             if (document.exists()) {
+                // Extract the keys and comments
+                val keys = document.data?.keys?.toList() ?: emptyList()
                 val comments = document.data?.mapNotNull { entry ->
                     val value = entry.value
                     if (value is Map<*, *>) {
@@ -60,12 +63,16 @@ class FirebaseClientImpl : FirebaseClient {
                         value as? String
                     }
                 } ?: emptyList()
-                callback(comments)
+
+                // Pass the keys and comments to the callback
+                callback(keys, comments)
             } else {
-                callback(emptyList())
+                callback(emptyList(), emptyList())
             }
         }
     }
+
+
 
     override fun addComment(movieName: String, userEmail: String, comment: String) {
         val db = Firebase.firestore
@@ -78,3 +85,4 @@ class FirebaseClientImpl : FirebaseClient {
 
     }
 }
+
