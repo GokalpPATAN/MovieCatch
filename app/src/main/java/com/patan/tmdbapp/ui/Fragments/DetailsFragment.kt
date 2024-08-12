@@ -1,6 +1,7 @@
 package com.patan.tmdbapp.ui.detail
 
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +26,8 @@ class DetailsFragment : Fragment() {
     private lateinit var genreListAdapter: DetailsAdapter
     private lateinit var commentAdapter: CommentAdapter
     private val args by navArgs<DetailsFragmentArgs>()
-    private lateinit var auth: FirebaseAuth
+    private var auth: FirebaseAuth=FirebaseAuth.getInstance()
+    private val userEmail = auth.currentUser?.email.toString()
 
     private val viewModel: DetailsViewModel by viewModels {
         object : ViewModelProvider.Factory {
@@ -48,6 +50,64 @@ class DetailsFragment : Fragment() {
     ): View {
         _binding = FragmentDetailsBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getDetails(movieId = args.movieId)
+        viewModel.checkFavourite(movieId = args.movieId, userEmail)
+        observeEvents()
+
+
+        binding.FavCheck.setOnClickListener {
+
+            if (binding.FavCheck.isChecked) {
+                viewModel.addFavourite(movieId = args.movieId, userEmail)
+            } else {
+                viewModel.deleteFavourite(movieId = args.movieId, userEmail)
+            }
+
+
+        }
+        binding.button.setOnClickListener {
+            val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
+            findNavController().navigate(action)
+        }
+
+
+        binding.button2.setOnClickListener {
+            if (!binding.CardView.isVisible) {
+                binding.CardView.isVisible = true
+            } else {
+                binding.CardView.isVisible = false
+                val comment = binding.commentEditText.text.toString()
+                viewModel.detailList.observe(viewLifecycleOwner) { movie ->
+                    if (it != null) {
+                        val movieName = movie?.title.toString()
+                        viewModel.addComment(movieName, userEmail, comment = comment)
+                        viewModel.getCommentsFromDatabase(
+                            movieName = movie?.title.toString()
+                        )
+                        viewModel.userName.observe(viewLifecycleOwner) {
+                            viewModel.commentList.observe(viewLifecycleOwner) { comments ->
+                                if (comments.isNullOrEmpty()) {
+                                } else {
+                                    commentAdapter = CommentAdapter(it, comments)
+                                    binding.RecyclerView8.adapter = commentAdapter
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     private fun observeEvents() {
@@ -89,59 +149,5 @@ class DetailsFragment : Fragment() {
 
         }
 
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.getDetails(movieId = args.movieId)
-        viewModel.checkFavourite(movieId = args.movieId, userEmail = auth.currentUser?.email ?: "")
-        observeEvents()
-
-
-        binding.FavCheck.setOnClickListener {
-            val userEmail = auth.currentUser?.email ?: return@setOnClickListener
-            if (binding.FavCheck.isChecked) {
-                viewModel.addFavourite(movieId = args.movieId, userEmail)
-            } else {
-                viewModel.deleteFavourite(movieId = args.movieId, userEmail)
-            }
-        }
-        binding.button.setOnClickListener {
-            val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
-            findNavController().navigate(action)
-
-        }
-        binding.button2.setOnClickListener {
-            val userEmail = auth.currentUser?.email ?: return@setOnClickListener
-            if (!binding.CardView.isVisible) {
-                binding.CardView.isVisible = true
-            } else {
-                binding.CardView.isVisible = false
-                val comment = binding.commentEditText.text.toString()
-                viewModel.detailList.observe(viewLifecycleOwner) { movie ->
-                    if (it != null) {
-                        val movieName = movie?.title.toString()
-                        viewModel.addComment(movieName, userEmail, comment = comment)
-                        viewModel.getCommentsFromDatabase(
-                            movieName = movie?.title.toString()
-                        )
-                        viewModel.userName.observe(viewLifecycleOwner) {
-                            viewModel.commentList.observe(viewLifecycleOwner) { comments ->
-                                if (comments.isNullOrEmpty()) {
-                                } else {
-                                    commentAdapter = CommentAdapter(it, comments)
-                                    binding.RecyclerView8.adapter = commentAdapter
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

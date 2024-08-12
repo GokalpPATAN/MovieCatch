@@ -12,6 +12,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.MainActivity
 import com.patan.tmdbapp.databinding.FragmentLoginBinding
 
+
 class LoginFragment : Fragment() {
     private var _binding: FragmentLoginBinding? = null
     private val binding get() = _binding!!
@@ -41,32 +42,32 @@ class LoginFragment : Fragment() {
         }
     }
 
-    fun login(view: View) {
-        val email = binding.email.text.toString()
-        val password = binding.password.text.toString()
-        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    val intent = Intent(activity, MainActivity::class.java)
-                    activity?.startActivity(intent)
-                    Toast.makeText(
-                        requireContext(),
-                        "Login successful.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                    val user = auth.currentUser!!
-                } else {
-                    Toast.makeText(
-                        requireContext(),
-                        "Login failed.",
-                        Toast.LENGTH_SHORT,
-                    ).show()
-                }
-            }
-
-    }
 
     override fun onDestroyView() {
         super.onDestroyView()
     }
 
+    private fun login(view: View) {
+        val email = binding.email.text.toString()
+        val password = binding.password.text.toString()
+        auth.signInWithEmailAndPassword(email, password).addOnCompleteListener { task ->
+            if (task.isSuccessful) {
+                val intent = Intent(activity, MainActivity::class.java)
+                activity?.startActivity(intent)
+                Toast.makeText(
+                    requireContext(),
+                    "Login successful.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            } else {
+                Toast.makeText(
+                    requireContext(),
+                    "Login failed.",
+                    Toast.LENGTH_SHORT,
+                ).show()
+            }
+        }
+
+    }
 }
+

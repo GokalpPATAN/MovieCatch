@@ -17,6 +17,7 @@ class DetailsViewModel(private val firebaseClient: FirebaseClient) : ViewModel()
     val IdsList: MutableLiveData<Item?> = MutableLiveData()
     val commentList: MutableLiveData<List<String>> = MutableLiveData()
     val userName: MutableLiveData<List<String>> = MutableLiveData()
+    
     fun getDetails(movieId: Int) {
         viewModelScope.launch {
             try {

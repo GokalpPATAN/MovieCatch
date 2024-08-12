@@ -23,10 +23,19 @@ class SignUpFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentSignUpBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
         binding.signUpButton.setOnClickListener {
             register(it)
         }
-        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
     }
 
     private fun register(view: View) {
@@ -42,13 +51,5 @@ class SignUpFragment : Fragment() {
         }.addOnFailureListener { exception ->
             Toast.makeText(requireContext(), "There is an error occured", Toast.LENGTH_LONG).show()
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 }

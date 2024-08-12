@@ -51,7 +51,6 @@ class FirebaseClientImpl : FirebaseClient {
         val db = Firebase.firestore
         val docRef = db.collection("comment").document(movieName)
         docRef.get().addOnSuccessListener { document ->
-
             if (document.exists()) {
                 val keys = document.data?.keys?.toList() ?: emptyList()
                 val comments = document.data?.mapNotNull { entry ->

@@ -34,6 +34,34 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        viewModel.getTV()
+        observeEventsForMovies()
+        binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query1: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(query: String?): Boolean {
+                if (query?.length!! >= 3) {
+                    val query = binding.searchview.query
+                    viewModel.getSearch(query = query.toString())
+                    observeEventsForMovies()
+                }
+                return true
+            }
+
+        })
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
     private fun observeEventsForMovies() {
         viewModel.tvList.observe(viewLifecycleOwner) { list ->
             if (list.isNullOrEmpty()) {
@@ -71,32 +99,5 @@ class SearchFragment : Fragment() {
                 binding.RecyclerView5.adapter = searchAdapter
             }
         }
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        viewModel.getTV()
-        observeEventsForMovies()
-        binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query1: String?): Boolean {
-                return false
-            }
-
-            override fun onQueryTextChange(query: String?): Boolean {
-                if (query?.length!! >= 3) {
-                    val query = binding.searchview.query
-                    viewModel.getSearch(query = query.toString())
-                    observeEventsForMovies()
-                }
-                return true
-            }
-
-        })
-
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }
