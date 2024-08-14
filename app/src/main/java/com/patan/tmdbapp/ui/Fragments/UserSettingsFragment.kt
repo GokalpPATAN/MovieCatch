@@ -7,39 +7,32 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.patan.tmdbapp.databinding.FragmentUserSettingsBinding
 import com.patan.tmdbapp.model.Item
-import com.patan.tmdbapp.network.FirebaseClientImpl
 import com.patan.tmdbapp.ui.adapter.MainAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
 import com.patan.tmdbapp.ui.detail.DetailsViewModel
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class UserSettingsFragment : Fragment() {
 
     private var _binding: FragmentUserSettingsBinding? = null
     private val binding get() = _binding!!
     private lateinit var popularListAdapter: MainAdapter
-    private lateinit var auth: FirebaseAuth
+    @Inject
+    lateinit var auth: FirebaseUser
 
 
-    private val viewModel: DetailsViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
-                    return DetailsViewModel(FirebaseClientImpl()) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
-        }
-    }
+    private val viewModel: DetailsViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
+        println(auth)
     }
 
     override fun onCreateView(
@@ -61,7 +54,7 @@ class UserSettingsFragment : Fragment() {
     }
 
     private fun observeEvents() {
-        viewModel.getMovieIdsFromDatabase(userEmail = auth.currentUser?.email ?: "")
+        viewModel.getMovieIdsFromDatabase(userEmail = auth.email ?: "")
         viewModel.movieIds.observe(viewLifecycleOwner) {
             it.forEach {
                 val id = it.toInt()

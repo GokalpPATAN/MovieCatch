@@ -11,8 +11,9 @@ import com.patan.tmdbapp.databinding.FragmentHomeBinding
 import com.patan.tmdbapp.ui.ViewModels.HomeViewModel
 import com.patan.tmdbapp.ui.adapter.MainAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!

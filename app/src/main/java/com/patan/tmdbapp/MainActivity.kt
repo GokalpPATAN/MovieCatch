@@ -9,7 +9,9 @@ import androidx.navigation.ui.NavigationUI
 import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.databinding.ActivityMainBinding
 import com.patan.tmdbapp.ui.Fragments.HomeFragmentDirections
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding

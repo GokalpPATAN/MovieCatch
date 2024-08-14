@@ -4,11 +4,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patan.tmdbapp.model.Item
-import com.patan.tmdbapp.network.RetrofitClient
+import com.patan.tmdbapp.network.ApiService
 import com.patan.tmdbapp.util.Constants
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-
-class SearchViewModel : ViewModel() {
+import javax.inject.Inject
+@HiltViewModel
+class SearchViewModel @Inject constructor(private val apiService: ApiService) : ViewModel() {
     val searchList: MutableLiveData<List<Item?>?> = MutableLiveData()
     val tvList: MutableLiveData<List<Item?>?> = MutableLiveData()
     val errorMesage: MutableLiveData<String?> = MutableLiveData()
@@ -16,7 +18,7 @@ class SearchViewModel : ViewModel() {
     fun getSearch(query: String) {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.getClient()
+                val response = apiService
                     .getSearch(queryString = query, token = Constants.BEARER_KEY)
                 if (response.isSuccessful) {
                     searchList.postValue(response.body()?.Items)
@@ -37,7 +39,7 @@ class SearchViewModel : ViewModel() {
     fun getTV() {
         viewModelScope.launch {
             try {
-                val response = RetrofitClient.getClient().getTV(token = Constants.BEARER_KEY)
+                val response =apiService.getTV(token = Constants.BEARER_KEY)
                 if (response.isSuccessful) {
                     tvList.postValue(response.body()?.Items)
                 } else {

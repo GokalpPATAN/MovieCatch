@@ -1,24 +1,22 @@
 package com.patan.tmdbapp.ui.detail
 
 import android.os.Bundle
-import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.databinding.FragmentDetailsBinding
-import com.patan.tmdbapp.network.FirebaseClientImpl
 import com.patan.tmdbapp.ui.adapter.CommentAdapter
 import com.patan.tmdbapp.ui.adapter.DetailsAdapter
 import com.patan.tmdbapp.util.loadCircleImage
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class DetailsFragment : Fragment() {
 
     private var _binding: FragmentDetailsBinding? = null
@@ -26,23 +24,14 @@ class DetailsFragment : Fragment() {
     private lateinit var genreListAdapter: DetailsAdapter
     private lateinit var commentAdapter: CommentAdapter
     private val args by navArgs<DetailsFragmentArgs>()
-    private var auth: FirebaseAuth=FirebaseAuth.getInstance()
+    private var auth: FirebaseAuth = FirebaseAuth.getInstance()
     private val userEmail = auth.currentUser?.email.toString()
 
-    private val viewModel: DetailsViewModel by viewModels {
-        object : ViewModelProvider.Factory {
-            override fun <T : ViewModel> create(modelClass: Class<T>): T {
-                if (modelClass.isAssignableFrom(DetailsViewModel::class.java)) {
-                    return DetailsViewModel(FirebaseClientImpl()) as T
-                }
-                throw IllegalArgumentException("Unknown ViewModel class")
-            }
-        }
-    }
+    private val viewModel: DetailsViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        auth = FirebaseAuth.getInstance()
     }
 
     override fun onCreateView(

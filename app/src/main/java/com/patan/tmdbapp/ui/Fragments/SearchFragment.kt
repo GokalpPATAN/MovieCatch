@@ -12,8 +12,9 @@ import com.patan.tmdbapp.databinding.FragmentSearchBinding
 import com.patan.tmdbapp.ui.ViewModels.SearchViewModel
 import com.patan.tmdbapp.ui.adapter.MainAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
+import dagger.hilt.android.AndroidEntryPoint
 
-
+@AndroidEntryPoint
 class SearchFragment : Fragment() {
 
     private var _binding: FragmentSearchBinding? = null
