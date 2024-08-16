@@ -32,7 +32,9 @@ interface ApiService {
         @Query("query") queryString: String, @Header("Authorization") token: String
     ): Response<com.patan.tmdbapp.model.Response>
 
-    @GET("3/discover/tv?language=en-US&page=1&sort_by=popularity.desc")
-    suspend fun getTV(@Header("Authorization") token: String): Response<com.patan.tmdbapp.model.Response>
+    @GET("3/discover/movie?sort_by=created_at.asc&with_origin_country=TR")
+    suspend fun getTV(
+        @Header("Authorization") token: String
+    ): Response<com.patan.tmdbapp.model.Response>
 
 }

@@ -8,10 +8,12 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.patan.tmdbapp.databinding.FragmentSearchBinding
 import com.patan.tmdbapp.ui.ViewModels.SearchViewModel
 import com.patan.tmdbapp.ui.adapter.MainAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
+import com.patan.tmdbapp.ui.detail.DetailsFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -22,6 +24,7 @@ class SearchFragment : Fragment() {
 
     private val viewModel by viewModels<SearchViewModel>()
     private lateinit var searchAdapter: MainAdapter
+    private val args by navArgs<DetailsFragmentArgs>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,7 +49,11 @@ class SearchFragment : Fragment() {
             }
 
             override fun onQueryTextChange(query: String?): Boolean {
-                if (query?.length!! >= 3) {
+                if (query?.length!! < 3) {
+                    viewModel.getTV()
+                    observeEventsForMovies()
+
+                } else if (query?.length!! >= 3) {
                     val query = binding.searchview.query
                     viewModel.getSearch(query = query.toString())
                     observeEventsForMovies()

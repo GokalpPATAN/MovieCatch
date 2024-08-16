@@ -50,21 +50,16 @@ class DetailsFragment : Fragment() {
 
 
         binding.FavCheck.setOnClickListener {
-
             if (binding.FavCheck.isChecked) {
                 viewModel.addFavourite(movieId = args.movieId, userEmail)
             } else {
                 viewModel.deleteFavourite(movieId = args.movieId, userEmail)
             }
-
-
         }
         binding.button.setOnClickListener {
             val action = DetailsFragmentDirections.actionDetailsFragmentToHomeFragment()
             findNavController().navigate(action)
         }
-
-
         binding.button2.setOnClickListener {
             if (!binding.CardView.isVisible) {
                 binding.CardView.isVisible = true

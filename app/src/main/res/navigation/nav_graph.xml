@@ -27,7 +27,7 @@
         android:id="@+id/detailsFragment"
         android:name="com.patan.tmdbapp.ui.detail.DetailsFragment"
         android:label="fragment_details"
-        tools:layout="@layout/fragment_details" >
+        tools:layout="@layout/fragment_details">
         <argument
             android:name="movieId"
             app:argType="integer" />
@@ -42,7 +42,7 @@
         android:id="@+id/searchFragment"
         android:name="com.patan.tmdbapp.ui.search.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" >
+        tools:layout="@layout/fragment_search">
         <argument
             android:name="query"
             app:argType="string" />
@@ -54,9 +54,13 @@
         android:id="@+id/userSettingsFragment"
         android:name="com.patan.tmdbapp.ui.Fragments.UserSettingsFragment"
         android:label="fragment_user_settings"
-        tools:layout="@layout/fragment_user_settings" >
+        tools:layout="@layout/fragment_user_settings">
         <action
             android:id="@+id/action_userSettingsFragment_to_detailsFragment"
             app:destination="@id/detailsFragment" />
     </fragment>
+
+    <action
+        android:id="@+id/action_global_userSettingsFragment"
+        app:destination="@id/userSettingsFragment" />
 </navigation>

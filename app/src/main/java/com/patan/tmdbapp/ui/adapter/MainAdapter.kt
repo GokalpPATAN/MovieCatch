@@ -37,7 +37,7 @@ class MainAdapter(
             holder.binding.MovieTitle.text = now?.title
         }
         if (now?.overview.isNullOrEmpty()) {
-            holder.binding.MovieDesc.text = "There is no overview for this TV serie."
+            holder.binding.MovieDesc.text = "There is no overview for this movie."
         } else {
             holder.binding.MovieDesc.text = now?.overview
         }

@@ -25,7 +25,7 @@ class UserSettingsFragment : Fragment() {
     private val binding get() = _binding!!
     private lateinit var popularListAdapter: MainAdapter
     @Inject
-    lateinit var auth: FirebaseUser
+    lateinit var auth: FirebaseAuth
 
 
     private val viewModel: DetailsViewModel by viewModels()
@@ -54,7 +54,7 @@ class UserSettingsFragment : Fragment() {
     }
 
     private fun observeEvents() {
-        viewModel.getMovieIdsFromDatabase(userEmail = auth.email ?: "")
+        viewModel.getMovieIdsFromDatabase(userEmail = auth.currentUser?.email ?: "")
         viewModel.movieIds.observe(viewLifecycleOwner) {
             it.forEach {
                 val id = it.toInt()

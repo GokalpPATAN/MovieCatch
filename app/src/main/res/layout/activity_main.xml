@@ -20,6 +20,18 @@
         app:layout_constraintTop_toTopOf="@+id/userSettings"
         tools:visibility="visible" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/quit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="10dp"
+        android:clickable="true"
+        android:src="@drawable/baseline_exit_to_app_24"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toStartOf="@+id/userSettings"
+        app:layout_constraintTop_toTopOf="@+id/userSettings"
+        tools:visibility="visible" />
+
     <com.google.android.material.bottomnavigation.BottomNavigationView
         android:id="@+id/bottomnav"
         android:layout_width="match_parent"

@@ -20,6 +20,11 @@ object FirebaseModule {
     fun provideFirebaseAuth(): FirebaseUser {
         return FirebaseAuth.getInstance().currentUser!!
     }
+    @Provides
+    @Singleton
+    fun provideFirebaseAuthLogout(): FirebaseAuth {
+        return FirebaseAuth.getInstance()
+    }
 
     @Provides
     @Singleton

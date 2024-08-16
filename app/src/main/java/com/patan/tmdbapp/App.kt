@@ -1,7 +1,7 @@
-package com.patan.tmdbapp
+        package com.patan.tmdbapp
 
-import android.app.Application
-import dagger.hilt.android.HiltAndroidApp
+        import android.app.Application
+        import dagger.hilt.android.HiltAndroidApp
 
-@HiltAndroidApp
-class App : Application()
+        @HiltAndroidApp
+        class App : Application()

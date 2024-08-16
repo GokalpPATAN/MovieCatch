@@ -15,7 +15,6 @@ import javax.inject.Inject
 class DetailsViewModel @Inject constructor(
     private val firebaseClient: FirebaseClient,
 
-
     private val apiService: ApiService
 
 ) : ViewModel() {
@@ -60,7 +59,6 @@ class DetailsViewModel @Inject constructor(
             }
         }
     }
-
     fun addFavourite(movieId: Int, userEmail: String) {
         firebaseClient.addFavourite(movieId,userEmail)
     }
