@@ -8,12 +8,10 @@ import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import com.patan.tmdbapp.databinding.FragmentSearchBinding
 import com.patan.tmdbapp.ui.ViewModels.SearchViewModel
-import com.patan.tmdbapp.ui.adapter.MainAdapter
+import com.patan.tmdbapp.ui.adapter.HomeAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
-import com.patan.tmdbapp.ui.detail.DetailsFragmentArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -23,8 +21,7 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<SearchViewModel>()
-    private lateinit var searchAdapter: MainAdapter
-    private val args by navArgs<DetailsFragmentArgs>()
+    private lateinit var searchAdapter: HomeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,8 +38,6 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getTV()
-        observeEventsForMovies()
         binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query1: String?): Boolean {
                 return false
@@ -50,13 +45,23 @@ class SearchFragment : Fragment() {
 
             override fun onQueryTextChange(query: String?): Boolean {
                 if (query?.length!! < 3) {
-                    viewModel.getTV()
-                    observeEventsForMovies()
 
                 } else if (query?.length!! >= 3) {
-                    val query = binding.searchview.query
-                    viewModel.getSearch(query = query.toString())
-                    observeEventsForMovies()
+                    val query = binding.searchview.query.toString()
+                    searchAdapter = HomeAdapter(object : MovieClickListener {
+                        override fun onMovieClicked(movieId: Int?) {
+                            if (movieId != null) {
+                                val action =
+                                    SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
+                                        movieId
+                                    )
+                                findNavController().navigate(action)
+                            }
+                        }
+                    })
+                    binding.RecyclerView5.adapter = searchAdapter
+                    viewModel.getSearchPagingData(query)
+                    observeEvents()
                 }
                 return true
             }
@@ -70,42 +75,10 @@ class SearchFragment : Fragment() {
         _binding = null
     }
 
-    private fun observeEventsForMovies() {
-        viewModel.tvList.observe(viewLifecycleOwner) { list ->
-            if (list.isNullOrEmpty()) {
-            } else {
-                searchAdapter = MainAdapter(list, object : MovieClickListener {
-                    override fun onMovieClicked(movieId: Int?) {
-                        if (movieId != null) {
-                            val action =
-                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
-                                    movieId
-                                )
-                            findNavController().navigate(action)
-                        }
-                    }
-
-                })
-                binding.RecyclerView5.adapter = searchAdapter
-            }
+    private fun observeEvents() {
+        viewModel.pagingData.observe(viewLifecycleOwner) { pagingData ->
+            searchAdapter.submitData(lifecycle, pagingData)
         }
-        viewModel.searchList.observe(viewLifecycleOwner) { list ->
-            if (list.isNullOrEmpty()) {
-            } else {
-                searchAdapter = MainAdapter(list, object : MovieClickListener {
-                    override fun onMovieClicked(movieId: Int?) {
-                        if (movieId != null) {
-                            val action =
-                                SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
-                                    movieId
-                                )
-                            findNavController().navigate(action)
-                        }
-                    }
 
-                })
-                binding.RecyclerView5.adapter = searchAdapter
-            }
-        }
     }
 }

@@ -9,10 +9,9 @@ import com.patan.tmdbapp.model.Item
 import com.patan.tmdbapp.util.loadCircleImage
 
 
-class MainAdapter(
-    private val list: List<Item?>,
-    private val movieClickListener: MovieClickListener
-) : RecyclerView.Adapter<MainAdapter.ViewHolder>() {
+class FavAdapter(
+    private val list: List<Item?>, private val movieClickListener: MovieClickListener
+) : RecyclerView.Adapter<FavAdapter.ViewHolder>() {
     class ViewHolder(val binding: ItemHomeRecyclerViewBinding) :
         RecyclerView.ViewHolder(binding.root) {
 

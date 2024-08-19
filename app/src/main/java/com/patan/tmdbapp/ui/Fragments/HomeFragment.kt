@@ -9,7 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.patan.tmdbapp.databinding.FragmentHomeBinding
 import com.patan.tmdbapp.ui.ViewModels.HomeViewModel
-import com.patan.tmdbapp.ui.adapter.MainAdapter
+import com.patan.tmdbapp.ui.adapter.HomeAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,12 +19,7 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by viewModels<HomeViewModel>()
-    private lateinit var popularListAdapter: MainAdapter
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-    }
+    private lateinit var popularListAdapter: HomeAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -33,30 +28,27 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private fun observeEvents() {
-        viewModel.list.observe(viewLifecycleOwner) { list ->
-            if (list.isNullOrEmpty()) {
-            } else {
-                popularListAdapter = MainAdapter(list, object : MovieClickListener {
-                    override fun onMovieClicked(movieId: Int?) {
-                        if (movieId != null) {
-                            val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(
-                                movieId
-                            )
-                            findNavController().navigate(action)
-                        }
-                    }
-                })
-                binding.recyclerView3.adapter = popularListAdapter
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val responsePath = arguments?.getString("topath") ?: "now_playing"
-        viewModel.getPopularList(topath = responsePath)
+        popularListAdapter = HomeAdapter(object : MovieClickListener {
+            override fun onMovieClicked(movieId: Int?) {
+                if (movieId != null) {
+                    val action = HomeFragmentDirections.actionHomeFragmentToDetailsFragment(movieId)
+                    findNavController().navigate(action)
+                }
+            }
+        })
+        binding.recyclerView3.adapter = popularListAdapter
+        viewModel.getMoviesPagingData(topath = responsePath)
         observeEvents()
+    }
+
+    private fun observeEvents() {
+        viewModel.pagingData.observe(viewLifecycleOwner) { pagingData ->
+            popularListAdapter.submitData(lifecycle, pagingData)
+        }
     }
 
     override fun onDestroyView() {

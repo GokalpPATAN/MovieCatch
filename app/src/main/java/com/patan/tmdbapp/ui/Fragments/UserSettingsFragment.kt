@@ -9,10 +9,9 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.patan.tmdbapp.databinding.FragmentUserSettingsBinding
 import com.patan.tmdbapp.model.Item
-import com.patan.tmdbapp.ui.adapter.MainAdapter
+import com.patan.tmdbapp.ui.adapter.FavAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
 import com.patan.tmdbapp.ui.detail.DetailsViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,7 +22,8 @@ class UserSettingsFragment : Fragment() {
 
     private var _binding: FragmentUserSettingsBinding? = null
     private val binding get() = _binding!!
-    private lateinit var popularListAdapter: MainAdapter
+    private lateinit var favListAdapter: FavAdapter
+
     @Inject
     lateinit var auth: FirebaseAuth
 
@@ -66,7 +66,7 @@ class UserSettingsFragment : Fragment() {
                     allItemsList.add(it)
                 }
                 println(it)
-                popularListAdapter = MainAdapter(allItemsList, object : MovieClickListener {
+                favListAdapter = FavAdapter(allItemsList, object : MovieClickListener {
                     override fun onMovieClicked(movieId: Int?) {
                         if (movieId != null) {
                             val action =
@@ -78,7 +78,7 @@ class UserSettingsFragment : Fragment() {
                     }
                 })
                 binding.progressBar.isVisible = false
-                binding.recyclerView4.adapter = popularListAdapter
+                binding.recyclerView4.adapter = favListAdapter
             }
 
         }
