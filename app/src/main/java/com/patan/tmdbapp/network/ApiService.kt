@@ -35,9 +35,9 @@ interface ApiService {
         @Query("page") page: Int
     ): Response<com.patan.tmdbapp.model.Response>
 
-    @GET("3/discover/movie?sort_by=created_at.asc&with_origin_country=TR")
+    @GET("3/discover/movie?with_origin_country=TR")
     suspend fun getTV(
+        @Query("page") page: Int,
         @Header("Authorization") token: String
     ): Response<com.patan.tmdbapp.model.Response>
-
 }

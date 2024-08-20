@@ -38,6 +38,21 @@ class SearchFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        searchAdapter = HomeAdapter(object : MovieClickListener {
+            override fun onMovieClicked(movieId: Int?) {
+                if (movieId != null) {
+                    val action = SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
+                        movieId
+                    )
+                    findNavController().navigate(action)
+                }
+            }
+        })
+        binding.RecyclerView5.adapter = searchAdapter
+        viewModel.getSearchView()
+        viewModel.pagingData2.observe(viewLifecycleOwner) { pagingData ->
+            searchAdapter.submitData(lifecycle, pagingData)
+        }
         binding.searchview.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query1: String?): Boolean {
                 return false
@@ -48,17 +63,6 @@ class SearchFragment : Fragment() {
 
                 } else if (query?.length!! >= 3) {
                     val query = binding.searchview.query.toString()
-                    searchAdapter = HomeAdapter(object : MovieClickListener {
-                        override fun onMovieClicked(movieId: Int?) {
-                            if (movieId != null) {
-                                val action =
-                                    SearchFragmentDirections.actionSearchFragmentToDetailsFragment(
-                                        movieId
-                                    )
-                                findNavController().navigate(action)
-                            }
-                        }
-                    })
                     binding.RecyclerView5.adapter = searchAdapter
                     viewModel.getSearchPagingData(query)
                     observeEvents()

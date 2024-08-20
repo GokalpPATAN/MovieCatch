@@ -1,5 +1,6 @@
 package com.patan.tmdbapp
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
@@ -56,7 +57,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
-            userSettings.setOnClickListener{
+            userSettings.setOnClickListener {
                 viewModel.fabVisibility()
             }
             favMovies.setOnClickListener {
@@ -65,6 +66,10 @@ class MainActivity : AppCompatActivity() {
             }
             quit.setOnClickListener {
                 viewModel.signOut()
+                val pref = getSharedPreferences("userInfos", Context.MODE_PRIVATE)
+                val editor = pref?.edit()
+                editor?.clear()
+                editor?.apply()
                 val intent = Intent(this@MainActivity, SecondActivity::class.java)
                 this@MainActivity.startActivity(intent)
             }
