@@ -13,7 +13,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.databinding.FragmentDetailsBinding
 import com.patan.tmdbapp.ui.adapter.CommentAdapter
 import com.patan.tmdbapp.ui.adapter.DetailsAdapter
-import com.patan.tmdbapp.util.loadCircleImage
+import com.patan.tmdbapp.util.loadSquareImage
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -101,7 +101,7 @@ class DetailsFragment : Fragment() {
             binding.textView3.text = movie?.releaseDate
             binding.textView5.text = movie?.status
             binding.textView6.text = movie?.voteAverage.toString()
-            binding.imageView3.loadCircleImage(movie?.posterPath)
+            binding.imageView3.loadSquareImage(movie?.posterPath)
             val list1 = movie?.genres
             if (!list1.isNullOrEmpty()) {
                 genreListAdapter = DetailsAdapter(list1)

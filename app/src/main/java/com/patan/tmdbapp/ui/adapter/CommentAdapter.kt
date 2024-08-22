@@ -30,7 +30,7 @@ class CommentAdapter(private val commentList: List<String>, private val user: Li
         val comment = commentList[position]
         val username = user[position]
 
-        holder.binding.textView9.text = "$username\n" + "$comment"
+        holder.binding.commentText.text = "$username\n" + "$comment"
 
     }
 }

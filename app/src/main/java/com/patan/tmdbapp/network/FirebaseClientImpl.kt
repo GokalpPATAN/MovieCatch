@@ -19,6 +19,7 @@ class FirebaseClientImpl @Inject constructor(
     override fun deleteFavourite(movieId: Int, userEmail: String) {
         val messageRef = firestore.collection("users").document(userEmail)
         messageRef.update(mapOf("$movieId" to FieldValue.delete()))
+
     }
 
     override fun isFavourite(movieId: Int, userEmail: String, callback: (Boolean) -> Unit) {
