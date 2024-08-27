@@ -1,41 +1,26 @@
 package com.patan.tmdbapp.ui.search
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.databinding.FragmentSearchBinding
+import com.patan.tmdbapp.ui.Fragments.BaseFragment
 import com.patan.tmdbapp.ui.ViewModels.SearchViewModel
 import com.patan.tmdbapp.ui.adapter.HomeAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class SearchFragment : Fragment() {
-
-    private var _binding: FragmentSearchBinding? = null
-    private val binding get() = _binding!!
-
+class SearchFragment : BaseFragment<FragmentSearchBinding>(FragmentSearchBinding::inflate) {
     private val viewModel by viewModels<SearchViewModel>()
     private lateinit var searchAdapter: HomeAdapter
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentSearchBinding.inflate(inflater, container, false)
-
-        return binding.root
-    }
-
-
+    @Inject
+    lateinit var auth: FirebaseAuth
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         searchAdapter = HomeAdapter(object : MovieClickListener {
@@ -72,11 +57,6 @@ class SearchFragment : Fragment() {
 
         })
 
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun observeEvents() {

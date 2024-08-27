@@ -1,33 +1,25 @@
 package com.patan.tmdbapp.ui.Fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.patan.tmdbapp.databinding.FragmentHomeBinding
 import com.patan.tmdbapp.ui.ViewModels.HomeViewModel
 import com.patan.tmdbapp.ui.adapter.HomeAdapter
 import com.patan.tmdbapp.ui.adapter.MovieClickListener
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment() {
-    private var _binding: FragmentHomeBinding? = null
-    private val binding get() = _binding!!
+class HomeFragment : BaseFragment<FragmentHomeBinding>(FragmentHomeBinding::inflate) {
 
     private val viewModel by viewModels<HomeViewModel>()
     private lateinit var popularListAdapter: HomeAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHomeBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
+    @Inject
+    lateinit var auth: FirebaseAuth
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -49,10 +41,5 @@ class HomeFragment : Fragment() {
         viewModel.pagingData.observe(viewLifecycleOwner) { pagingData ->
             popularListAdapter.submitData(lifecycle, pagingData)
         }
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

@@ -1,11 +1,8 @@
 package com.patan.tmdbapp.ui.Fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -18,39 +15,17 @@ import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class UserSettingsFragment : Fragment() {
-
-    private var _binding: FragmentUserSettingsBinding? = null
-    private val binding get() = _binding!!
-    private lateinit var favListAdapter: FavAdapter
-
+class UserSettingsFragment :
+    BaseFragment<FragmentUserSettingsBinding>(FragmentUserSettingsBinding::inflate) {
     @Inject
     lateinit var auth: FirebaseAuth
-
+    private lateinit var favListAdapter: FavAdapter
 
     private val viewModel: DetailsViewModel by viewModels()
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        println(auth)
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentUserSettingsBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         observeEvents()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun observeEvents() {
