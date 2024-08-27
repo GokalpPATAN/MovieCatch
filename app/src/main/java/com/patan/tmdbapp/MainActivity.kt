@@ -1,3 +1,6 @@
+//VK zorunlu staj projesi 22.07.2024 tarihinde başlandı, 27.08.2024 tarihinde bitirildi.
+//Ahmet Gökalp PATAN
+
 package com.patan.tmdbapp
 
 import android.content.Context
