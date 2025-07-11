@@ -3,8 +3,6 @@
 <!-- HEADER STYLE: CLASSIC -->
 <div align="center">
 
-<img src="MovieCatch.png" width="30%" style="position: relative; top: 0; right: 0;" alt="Project Logo"/>
-
 # MOVIECATCH
 
 <em>Discover Movies Faster, Smarter, and More Engaging</em>
